@@ -7,7 +7,7 @@ const projects = [
     id: 1,
     name: 'Project1',
     uuid: '00000000-0000-0000-0000-000000000000',
-    items: [],
+    expenses: [],
     isOpen: true,
     createdAt: new Date('2023-01-01'),
   },
@@ -15,7 +15,7 @@ const projects = [
     id: 2,
     name: 'Project2',
     uuid: '00000000-0000-0000-0000-000000000001',
-    items: [],
+    expenses: [],
     isOpen: true,
     createdAt: new Date('2023-01-03'),
   },
@@ -25,5 +25,9 @@ const projects = [
 export class MockService extends ProjectService {
   async getAll(): Promise<Project[]> {
     return Promise.resolve(projects);
+  }
+
+  getByUuid(uuid: string): Promise<Project> {
+    return Promise.resolve(undefined);
   }
 }

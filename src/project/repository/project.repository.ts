@@ -1,5 +1,5 @@
 export abstract class ProjectRepository {
   abstract getAll();
 
-  abstract getById(id: number);
+  abstract getByUuid(uuid: string);
 }

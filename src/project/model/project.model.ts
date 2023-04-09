@@ -2,7 +2,7 @@ export type Project = {
   id: number;
   name: string;
   uuid: string;
-  items: any[];
+  expenses: any[];
   isOpen: boolean;
   createdAt: Date;
 };

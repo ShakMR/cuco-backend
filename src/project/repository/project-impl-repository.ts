@@ -18,16 +18,16 @@ export class ProjectImplRepository extends ProjectRepository {
     return {
       ...rest,
       createdAt: new Date(created_at),
-      items: [],
+      expenses: [],
     };
   }
 
   async getAll(): Promise<ProjectModel[]> {
     const m = await this.db.getAll();
-    return (m).map(ProjectImplRepository.map);
+    return m.map(ProjectImplRepository.map);
   }
 
-  async getById(id: number): Promise<ProjectModel> {
-    return ProjectImplRepository.map(await this.db.getById(id));
+  async getByUuid(uuid: string): Promise<ProjectModel> {
+    return ProjectImplRepository.map(await this.db.find({ uuid }));
   }
 }

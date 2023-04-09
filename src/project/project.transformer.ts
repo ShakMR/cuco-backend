@@ -7,7 +7,8 @@ export class ProjectTransformer implements Transformer<Project, ProjectDto> {
     return {
       name: item.name,
       uuid: item.uuid,
-      items: item.items,
+      expenses: item.expenses,
+      createdAt: item.createdAt,
     };
   }
 }

@@ -128,6 +128,7 @@ export interface Database {
           id: number;
           payer_id: number;
           payment_type: number | null;
+          project_id: number | null;
           uuid: string;
         };
         Insert: {
@@ -139,6 +140,7 @@ export interface Database {
           id?: number;
           payer_id: number;
           payment_type?: number | null;
+          project_id?: number | null;
           uuid: string;
         };
         Update: {
@@ -150,6 +152,7 @@ export interface Database {
           id?: number;
           payer_id?: number;
           payment_type?: number | null;
+          project_id?: number | null;
           uuid?: string;
         };
       };

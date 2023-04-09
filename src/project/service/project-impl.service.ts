@@ -12,4 +12,8 @@ export class ProjectImplService extends ProjectService {
   getAll(): Promise<Project[]> {
     return this.repository.getAll();
   }
+
+  getByUuid(uuid: string) {
+    return this.repository.getByUuid(uuid);
+  }
 }
