@@ -1,6 +1,6 @@
 import { ProjectListDto } from './dto/project-list.dto';
 import { Controller, Get } from '@nestjs/common';
-import { ProjectService } from './project.service';
+import { ProjectService } from './service/project.service';
 import { Transformer } from '../common/transformers/transformer';
 import { Project } from './model/project.model';
 import { ProjectDto } from './dto/project.dto';

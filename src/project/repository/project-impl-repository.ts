@@ -1,0 +1,33 @@
+import { ProjectRepository } from './project.repository';
+import { DbClient } from '../../db/db-client';
+import { Project } from '../../db/schemas';
+import { Project as ProjectModel } from '../model/project.model';
+import { Injectable } from '@nestjs/common';
+
+@Injectable()
+export class ProjectImplRepository extends ProjectRepository {
+  constructor(private db: DbClient<Project>) {
+    super();
+  }
+
+  onModuleInit() {
+    this.db.init('Project');
+  }
+
+  static map({ created_at, ...rest }: Project): ProjectModel {
+    return {
+      ...rest,
+      createdAt: new Date(created_at),
+      items: [],
+    };
+  }
+
+  async getAll(): Promise<ProjectModel[]> {
+    const m = await this.db.getAll();
+    return (m).map(ProjectImplRepository.map);
+  }
+
+  async getById(id: number): Promise<ProjectModel> {
+    return ProjectImplRepository.map(await this.db.getById(id));
+  }
+}

@@ -1,5 +1,5 @@
 import { ProjectService } from './project.service';
-import { Project } from './model/project.model';
+import { Project } from '../model/project.model';
 import { Injectable } from '@nestjs/common';
 
 const projects = [
