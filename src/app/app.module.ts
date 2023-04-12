@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ProjectModule } from '../project/project.module';
-import { DbModule } from '../db/db.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), ProjectModule],

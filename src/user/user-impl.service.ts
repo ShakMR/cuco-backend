@@ -7,6 +7,7 @@ export class UserImplService extends UserService {
   constructor(private repository: UserRepository) {
     super();
   }
+
   getById(id: number) {
     return this.repository.getById(id);
   }

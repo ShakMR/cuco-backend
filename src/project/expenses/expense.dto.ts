@@ -3,7 +3,6 @@ import { PaymentType } from '../../payment-type/payment-type.model';
 import { GhostUser, User } from '../../user/user.model';
 
 export interface ExpenseDto {
-
   uuid: string;
   amount: number;
   concept: string;

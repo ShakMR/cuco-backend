@@ -1,4 +1,4 @@
-import { ExpenseModel } from './expense.model';
+import { EnrichedExpenseModel } from './expense.model';
 
 type PaginationOptions = {
   howMany: number;
@@ -9,7 +9,7 @@ export abstract class ExpensesService {
   abstract getFromProject(
     projectId: number,
     options?: PaginationOptions,
-  ): Promise<ExpenseModel[]>;
+  ): Promise<EnrichedExpenseModel[]>;
 
-  abstract getByUuid(uuid: string): Promise<ExpenseModel>;
+  abstract getByUuid(uuid: string): Promise<EnrichedExpenseModel>;
 }

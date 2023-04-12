@@ -28,7 +28,7 @@ export class ExpensesImplRepository extends ExpensesRepository {
     };
   }
 
-  async getFromProject(projectId: number) {
+  async getFromProject(projectId: number): Promise<ExpenseModel> {
     const expenses = await this.db.findAll({ project_id: projectId }, [
       'User',
       'PaymentType',

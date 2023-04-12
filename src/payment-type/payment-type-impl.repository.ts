@@ -13,6 +13,7 @@ export class PaymentTypeImplRepository extends PaymentTypeRepository {
   onModuleInit() {
     this.db.init('PaymentType');
   }
+
   async getById(id: number): Promise<PaymentTypeModel> {
     const paymentType = await this.db.getById(id);
 

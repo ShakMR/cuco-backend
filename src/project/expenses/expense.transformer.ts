@@ -1,5 +1,5 @@
 import { Transformer } from '../../common/transformers/transformer';
-import { ExpenseModel } from './expense.model';
+import { EnrichedExpenseModel, ExpenseModel } from './expense.model';
 import { ExpenseDto } from './expense.dto';
 
 export class ExpenseTransformer
@@ -11,7 +11,7 @@ export class ExpenseTransformer
     paymentType,
     payer,
     ...rest
-  }: ExpenseModel): ExpenseDto {
+  }: EnrichedExpenseModel): ExpenseDto {
     return {
       ...rest,
       currency: {

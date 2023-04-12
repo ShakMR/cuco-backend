@@ -8,6 +8,7 @@ export class PaymentTypeImplService extends PaymentTypeService {
   constructor(private repository: PaymentTypeRepository) {
     super();
   }
+
   getById(id: number): Promise<PaymentType> {
     return this.repository.getById(id);
   }

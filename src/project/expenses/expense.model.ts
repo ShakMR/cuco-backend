@@ -8,8 +8,14 @@ export interface ExpenseModel {
   amount: number;
   concept: string;
   createdAt: string | null;
-  currency?: Partial<Currency>;
+  currency?: Pick<Currency, 'id'>;
   date: Date;
-  payer?: Partial<User | GhostUser>;
-  paymentType?: PaymentType;
+  payer?: Pick<User | GhostUser, 'id'>;
+  paymentType?: Pick<PaymentType, 'id'>;
+}
+
+export interface EnrichedExpenseModel extends ExpenseModel {
+  currency: Currency;
+  payer: User | GhostUser;
+  paymentType: PaymentType;
 }
