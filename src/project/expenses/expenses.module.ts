@@ -8,9 +8,10 @@ import { DbModule } from '../../db/db.module';
 import { ExpensesController } from './expenses.controller';
 import { CurrencyModule } from '../../currency/currency.module';
 import { PaymentTypeModule } from '../../payment-type/payment-type.module';
+import { UserModule } from '../../user/user.module';
 
 @Module({
-  imports: [DbModule, CurrencyModule, PaymentTypeModule],
+  imports: [DbModule, CurrencyModule, PaymentTypeModule, UserModule],
   controllers: [ExpensesController],
   providers: [
     {

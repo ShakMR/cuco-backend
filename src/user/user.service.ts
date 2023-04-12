@@ -1,4 +1,3 @@
-import { Injectable } from '@nestjs/common';
-
-@Injectable()
-export class UserService {}
+export abstract class UserService {
+  abstract getById(id: number);
+}

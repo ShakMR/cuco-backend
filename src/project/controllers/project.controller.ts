@@ -15,13 +15,18 @@ import { ResponseDto } from '../../common/dto/response.dto';
 import { ExpenseDto } from '../expenses/expense.dto';
 import { ExpensesService } from '../expenses/expenses.service';
 import { ExpenseTransformer } from '../expenses/expense.transformer';
+import { ProjectDependenciesDto } from '../dto/project-dependencies.dto';
 
 @Controller('projects')
 export class ProjectController {
   constructor(
     private service: ProjectService,
     private expensesService: ExpensesService,
-    private transformer: Transformer<Project, ProjectDto>,
+    private transformer: Transformer<
+      Project,
+      ProjectDto,
+      ProjectDependenciesDto
+    >,
     private expensesTransformer: ExpenseTransformer,
   ) {}
 
@@ -38,12 +43,22 @@ export class ProjectController {
   @Get('/:uuid')
   async get(
     @Param('uuid') uuid: string,
-    @Query('includeItems') includeItems: boolean,
+    @Query('includeExpenses') includeExpenses: boolean,
+    @Query('includeCalculation') includeCalculations: boolean,
   ): Promise<ResponseDto<ProjectDto>> {
     const project = await this.service.getByUuid(uuid);
 
+    let expenses = [];
+    if (includeExpenses) {
+      expenses = await this.expensesService.getFromProject(project.id);
+    }
+
+    project.expenses = expenses;
+
     return {
-      data: this.transformer.transform(project),
+      data: this.transformer.transform(project, {
+        expenses: expenses.map(this.expensesTransformer.transform),
+      }),
       meta: {},
     };
   }

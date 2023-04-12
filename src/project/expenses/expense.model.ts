@@ -1,5 +1,6 @@
 import { Currency } from '../../currency/currency.model';
 import { PaymentType } from '../../payment-type/payment-type.model';
+import { GhostUser, User } from '../../user/user.model';
 
 export interface ExpenseModel {
   id: number;
@@ -9,8 +10,6 @@ export interface ExpenseModel {
   createdAt: string | null;
   currency?: Partial<Currency>;
   date: Date;
-  payer?: {
-    id: number;
-  }; // TODO to be created with module User
+  payer?: Partial<User | GhostUser>;
   paymentType?: PaymentType;
 }

@@ -5,7 +5,13 @@ import { ExpenseDto } from './expense.dto';
 export class ExpenseTransformer
   implements Transformer<ExpenseModel, ExpenseDto>
 {
-  transform({ id, currency, paymentType, ...rest }: ExpenseModel): ExpenseDto {
+  transform({
+    id,
+    currency,
+    paymentType,
+    payer,
+    ...rest
+  }: ExpenseModel): ExpenseDto {
     return {
       ...rest,
       currency: {
@@ -13,6 +19,10 @@ export class ExpenseTransformer
       },
       paymentType: {
         name: paymentType.name,
+      },
+      payer: {
+        type: payer.type,
+        name: payer.name,
       },
     };
   }

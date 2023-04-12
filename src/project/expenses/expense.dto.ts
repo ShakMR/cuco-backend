@@ -1,5 +1,6 @@
 import { Currency } from '../../currency/currency.model';
 import { PaymentType } from '../../payment-type/payment-type.model';
+import { GhostUser, User } from '../../user/user.model';
 
 export interface ExpenseDto {
 
@@ -9,8 +10,6 @@ export interface ExpenseDto {
   createdAt: string | null;
   currency?: Partial<Currency>;
   date: Date;
-  payer?: {
-    id: number; // TODO add users
-  };
+  payer?: Partial<User | GhostUser>;
   paymentType?: Partial<PaymentType>;
 }

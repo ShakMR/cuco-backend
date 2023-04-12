@@ -8,7 +8,7 @@ type PaginationOptions = {
 export abstract class ExpensesService {
   abstract getFromProject(
     projectId: number,
-    options: PaginationOptions,
+    options?: PaginationOptions,
   ): Promise<ExpenseModel[]>;
 
   abstract getByUuid(uuid: string): Promise<ExpenseModel>;
