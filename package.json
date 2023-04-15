@@ -30,8 +30,11 @@
     "@nestjs/swagger": "^6.3.0",
     "@supabase/supabase-js": "^2.15.0",
     "ajv": "^6.12.6",
+    "cors": "^2.8.5",
+    "helmet": "^6.1.5",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",

@@ -1,6 +1,6 @@
 export type Filter<T> = Partial<T>;
 
-export abstract class DbClient<Schema, ID = number> {
+export abstract class DbClient<Schema, ID = number, CreateSchema = any> {
   abstract init(tableName: string);
 
   abstract getAll(): Promise<Schema[]>;
@@ -10,4 +10,6 @@ export abstract class DbClient<Schema, ID = number> {
   abstract find(filters: Filter<Schema>, extraSelect?: string[]);
 
   abstract findAll(filters: Filter<Schema>, extraSelect?: string[]);
+
+  abstract save(newDate: CreateSchema): Promise<Schema>;
 }

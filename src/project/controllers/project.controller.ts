@@ -12,10 +12,11 @@ import { Transformer } from '../../common/transformers/transformer';
 import { Project } from '../model/project.model';
 import { ProjectDto } from '../dto/project.dto';
 import { ResponseDto } from '../../common/dto/response.dto';
-import { ExpenseDto } from '../expenses/expense.dto';
-import { ExpensesService } from '../expenses/expenses.service';
-import { ExpenseTransformer } from '../expenses/expense.transformer';
+import { ExpenseDto } from '../../expenses/expense.dto';
+import { ExpensesService } from '../../expenses/expenses.service';
+import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { ProjectDependenciesDto } from '../dto/project-dependencies.dto';
+import { LoggerService } from '../../logger/logger.service';
 
 @Controller('projects')
 export class ProjectController {
@@ -28,10 +29,14 @@ export class ProjectController {
       ProjectDependenciesDto
     >,
     private expensesTransformer: ExpenseTransformer,
-  ) {}
+    private logger: LoggerService,
+  ) {
+    logger.setContext(ProjectController.name);
+  }
 
   @Get()
   async list(): Promise<ProjectListDto> {
+    this.logger.log('Getting projects');
     const projects = await this.service.getAll();
 
     return {
@@ -46,18 +51,15 @@ export class ProjectController {
     @Query('includeExpenses') includeExpenses: boolean,
     @Query('includeCalculation') includeCalculations: boolean,
   ): Promise<ResponseDto<ProjectDto>> {
-    const project = await this.service.getByUuid(uuid);
-
-    let expenses = [];
-    if (includeExpenses) {
-      expenses = await this.expensesService.getFromProject(project.id);
-    }
-
-    project.expenses = expenses;
+    const project = await this.service.getByUuid(uuid, { includeExpenses });
 
     return {
       data: this.transformer.transform(project, {
-        expenses: expenses.map(this.expensesTransformer.transform),
+        expenses: project.expenses.map((expense) =>
+          this.expensesTransformer.transform(expense, {
+            project: { uuid }
+          }),
+        ),
       }),
       meta: {},
     };
@@ -84,7 +86,9 @@ export class ProjectController {
 
     return {
       data: expenses.map((expense) =>
-        this.expensesTransformer.transform(expense),
+        this.expensesTransformer.transform(expense, {
+          project: { uuid },
+        }),
       ),
       meta: {
         pagination: {

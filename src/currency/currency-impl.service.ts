@@ -10,4 +10,8 @@ export class CurrencyImplService implements CurrencyService {
   async getById(id: number): Promise<Currency> {
     return this.repository.getById(id);
   }
+
+  findByName(name): Promise<Currency> {
+    return this.repository.findOne({ name: name });
+  }
 }

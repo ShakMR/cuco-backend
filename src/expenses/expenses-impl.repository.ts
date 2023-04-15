@@ -1,7 +1,7 @@
 import { ExpensesRepository } from './expenses.repository';
 import { Injectable } from '@nestjs/common';
-import { DbClient } from '../../db/db-client';
-import { Expenses, ExpensesTable } from '../../db/schemas';
+import { DbClient } from '../db/db-client';
+import { ExpenseCreate, Expenses, ExpensesTable } from '../db/schemas';
 import { ExpenseModel } from './expense.model';
 
 @Injectable()
@@ -24,7 +24,8 @@ export class ExpensesImplRepository extends ExpensesRepository {
       createdAt: expense.created_at,
       payer: { id: expense.payer_id },
       currency: { id: expense.currency },
-      paymentType: { id: expense.id },
+      paymentType: { id: expense.payment_type },
+      project: { id: expense.project_id },
     };
   }
 
@@ -38,8 +39,14 @@ export class ExpensesImplRepository extends ExpensesRepository {
   }
 
   async getByUuid(uuid: string) {
-    const expense = await this.db.find({ uuid }, ['User', 'PaymentType']);
+    const expense = await this.db.find({ uuid });
 
     return ExpensesImplRepository.map(expense);
+  }
+
+  async save(expense: ExpenseCreate) {
+    const newExpense = await this.db.save(expense);
+
+    return ExpensesImplRepository.map(newExpense);
   }
 }

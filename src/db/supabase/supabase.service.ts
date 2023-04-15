@@ -8,6 +8,7 @@ import { GenericSchema } from '@supabase/supabase-js/dist/main/lib/types';
 import { Injectable, Scope } from '@nestjs/common';
 import { DbConnector } from '../db-connector';
 import { Database } from './database.types';
+import { LoggerService } from '../../logger/logger.service';
 
 function buildSelectExtra(selectExtra: string[]) {
   return ['*', ...selectExtra.map((extra) => `${extra}(*)`)].join(', ');
@@ -21,23 +22,24 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   number
 > {
   private table: PostgrestQueryBuilder<Schema, any>;
-  protected client: SBClient;
+  private tableName: string;
 
-  constructor(private connector: DbConnector<SupabaseClient<Database>>) {
+  constructor(
+    private connector: DbConnector<SupabaseClient<Database>>,
+    private logger: LoggerService,
+  ) {
     super();
+    logger.setContext(SupabaseService.name);
   }
 
   async init(tableName: string) {
     const client = this.connector.getClient();
     this.table = await client.from(tableName);
+    this.tableName = tableName;
   }
 
   async getAll(): Promise<Schema[]> {
-    const response = await this.table.select();
-    if (response.error) {
-      throw response.error;
-    }
-    return response.data;
+    return await this.findAll({});
   }
 
   async getById(id: number): Promise<Schema> {
@@ -69,6 +71,21 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
       throw response.error;
     }
 
+    this.logger.debug(
+      `${this.tableName} getAll ${JSON.stringify(filters)}: amount ${
+        response.data.length
+      }`,
+    );
     return response.data;
+  }
+
+  async save(newDate: any): Promise<Schema> {
+    const response = await this.table.insert(newDate).select();
+
+    if (response.error) {
+      throw response.error;
+    }
+
+    return response.data[0];
   }
 }

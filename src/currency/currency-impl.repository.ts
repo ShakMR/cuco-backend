@@ -22,4 +22,8 @@ export class CurrencyImplRepository extends CurrencyRepository {
       name: currency.name,
     };
   }
+
+  findOne(filter: { name: string }): Promise<Currency> {
+    return this.db.find(filter);
+  }
 }

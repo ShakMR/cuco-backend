@@ -1,4 +1,4 @@
-import { EnrichedExpenseModel } from './expense.model';
+import { CreateExpenseModel, EnrichedExpenseModel } from './expense.model';
 
 type PaginationOptions = {
   howMany: number;
@@ -12,4 +12,8 @@ export abstract class ExpensesService {
   ): Promise<EnrichedExpenseModel[]>;
 
   abstract getByUuid(uuid: string): Promise<EnrichedExpenseModel>;
+
+  abstract addNew(
+    expenseToCreate: CreateExpenseModel,
+  ): Promise<EnrichedExpenseModel>;
 }

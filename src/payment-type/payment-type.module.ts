@@ -4,9 +4,10 @@ import { PaymentTypeImplService } from './payment-type-impl.service';
 import { PaymentTypeRepository } from './payment-type.repository';
 import { PaymentTypeImplRepository } from './payment-type-impl.repository';
 import { DbModule } from '../db/db.module';
+import LoggerModule from '../logger/logger.module';
 
 @Module({
-  imports: [DbModule],
+  imports: [DbModule, LoggerModule],
   providers: [
     {
       provide: PaymentTypeService,

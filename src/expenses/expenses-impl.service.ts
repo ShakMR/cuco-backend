@@ -1,13 +1,18 @@
 import { ExpensesService } from './expenses.service';
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { ExpensesRepository } from './expenses.repository';
-import { EnrichedExpenseModel, ExpenseModel } from './expense.model';
-import { CurrencyService } from '../../currency/currency.service';
-import { PaymentTypeService } from '../../payment-type/payment-type.service';
-import { UserService } from '../../user/user.service';
-import { GhostUser, User } from '../../user/user.model';
-import { Currency } from '../../currency/currency.model';
-import { PaymentType } from '../../payment-type/payment-type.model';
+import {
+  CreateExpenseModel,
+  EnrichedExpenseModel,
+  ExpenseModel,
+} from './expense.model';
+import { CurrencyService } from '../currency/currency.service';
+import { PaymentTypeService } from '../payment-type/payment-type.service';
+import { UserService } from '../user/user.service';
+import { GhostUser, User } from '../user/user.model';
+import { Currency } from '../currency/currency.model';
+import { PaymentType } from '../payment-type/payment-type.model';
 
 type Relations = {
   payer: User | GhostUser;
@@ -35,7 +40,7 @@ export class ExpensesImplService extends ExpensesService {
   async getByUuid(uuid: string): Promise<EnrichedExpenseModel> {
     const expense: ExpenseModel = await this.repository.getByUuid(uuid);
 
-    return this.enrichExpenses([expense])[0];
+    return (await this.enrichExpenses([expense]))[0];
   }
 
   private async enrichExpenses(
@@ -62,5 +67,32 @@ export class ExpensesImplService extends ExpensesService {
     ]);
 
     return { payer, currency, paymentType };
+  }
+
+  public async addNew({
+    amount,
+    paymentTypeName,
+    currencyName,
+    payerId,
+    projectId,
+    date,
+    concept,
+  }: CreateExpenseModel): Promise<EnrichedExpenseModel> {
+    const uuid = uuidv4();
+
+    const expense = await this.repository.save({
+      uuid,
+      amount,
+      concept,
+      project_id: projectId,
+      date: date.toISOString(),
+      payer_id: payerId,
+      currency: (await this.currencyService.findByName(currencyName)).id,
+      payment_type: (
+        await this.paymentTypeService.findByName(paymentTypeName)
+      ).id,
+    });
+
+    return (await this.enrichExpenses([expense]))[0];
   }
 }

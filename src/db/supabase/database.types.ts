@@ -187,6 +187,7 @@ export interface Database {
           id: number;
           is_ghost: boolean;
           name: string | null;
+          uuid: string;
         };
         Insert: {
           created_at?: string | null;
@@ -195,6 +196,7 @@ export interface Database {
           id?: number;
           is_ghost?: boolean;
           name?: string | null;
+          uuid: string;
         };
         Update: {
           created_at?: string | null;
@@ -203,6 +205,7 @@ export interface Database {
           id?: number;
           is_ghost?: boolean;
           name?: string | null;
+          uuid: string;
         };
       };
     };

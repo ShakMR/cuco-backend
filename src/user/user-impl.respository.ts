@@ -20,6 +20,7 @@ export class UserImplRespository extends UserRepository {
     return {
       type: baseUser.is_ghost ? 'ghost' : 'user',
       id: baseUser.id,
+      uuid: baseUser.uuid,
       name: baseUser.name,
       createdAt: new Date(baseUser.created_at),
       email: baseUser.email,

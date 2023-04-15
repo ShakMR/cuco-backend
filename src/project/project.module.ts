@@ -7,11 +7,13 @@ import { ProjectRepository } from './repository/project.repository';
 import { ProjectImplRepository } from './repository/project-impl-repository';
 import { DbModule } from '../db/db.module';
 import { ProjectImplService } from './service/project-impl.service';
-import { ExpensesModule } from './expenses/expenses.module';
+import { ExpensesModule } from '../expenses/expenses.module';
+import LoggerModule from '../logger/logger.module';
+import { ProjectExpensesController } from './controllers/project-expenses.controller';
 
 @Module({
-  imports: [DbModule, ExpensesModule],
-  controllers: [ProjectController],
+  imports: [DbModule, ExpensesModule, LoggerModule],
+  controllers: [ProjectController, ProjectExpensesController],
   providers: [
     {
       provide: ProjectService,

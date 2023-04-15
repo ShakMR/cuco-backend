@@ -1,5 +1,6 @@
 type BaseUser = {
   id: number;
+  uuid: string;
   name: string;
   externalId: string;
   email: string;

@@ -4,9 +4,10 @@ import { DbConnector } from './db-connector';
 import { SupabaseSingletonConnectorService } from './supabase/supabase-connector.service';
 import { DbClient } from './db-client';
 import { SupabaseService } from './supabase/supabase.service';
+import LoggerModule from '../logger/logger.module';
 
 @Module({
-  imports: [ConfigModule.forRoot()],
+  imports: [ConfigModule.forRoot(), LoggerModule],
   providers: [
     {
       provide: DbConnector,

@@ -12,4 +12,8 @@ export class PaymentTypeImplService extends PaymentTypeService {
   getById(id: number): Promise<PaymentType> {
     return this.repository.getById(id);
   }
+
+  findByName(name: string): Promise<PaymentType> {
+    return this.repository.findOne({ name });
+  }
 }
