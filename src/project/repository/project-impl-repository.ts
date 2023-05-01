@@ -1,6 +1,6 @@
 import { ProjectRepository } from './project.repository';
 import { DbClient } from '../../db/db-client';
-import { Project } from '../../db/schemas';
+import { Project, ProjectCreate } from '../../db/schemas';
 import { Project as ProjectModel } from '../model/project.model';
 import { Injectable } from '@nestjs/common';
 
@@ -29,5 +29,9 @@ export class ProjectImplRepository extends ProjectRepository {
 
   async getByUuid(uuid: string): Promise<ProjectModel> {
     return ProjectImplRepository.map(await this.db.find({ uuid }));
+  }
+
+  async save(project: ProjectCreate) {
+    return ProjectImplRepository.map(await this.db.save(project));
   }
 }

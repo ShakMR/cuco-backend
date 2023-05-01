@@ -12,6 +12,7 @@ export class ProjectTransformer
       uuid: item.uuid,
       expenses: deps.expenses,
       createdAt: item.createdAt,
+      isOpen: item.isOpen,
     };
   }
 }

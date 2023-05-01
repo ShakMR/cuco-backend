@@ -1,15 +1,19 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
   HttpStatus,
   Param,
+  Post,
   Query,
 } from '@nestjs/common';
 import { ProjectService } from '../service/project.service';
 import { Transformer } from '../../common/transformers/transformer';
 import { Project } from '../model/project.model';
 import {
+  CreateProjectDto,
+  CreateProjectResponse,
   ProjectDto,
   ProjectsResponse,
   SingleProjectResponse,
@@ -19,7 +23,7 @@ import { ExpensesService } from '../../expenses/expenses.service';
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { ProjectDependenciesDto } from '../dto/project-dependencies.dto';
 import { LoggerService } from '../../logger/logger.service';
-import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -130,6 +134,29 @@ export class ProjectController {
           self: `/projects/${uuid}/expenses`,
         },
       },
+    };
+  }
+
+  @Post()
+  @ApiBody({ type: CreateProjectDto })
+  @ApiOkResponse({
+    description: 'Create a project',
+    type: CreateProjectResponse,
+  })
+  @ApiResponse({
+    status: HttpStatus.CONFLICT,
+    description: 'A project with that name already exists',
+  })
+  async createProject(
+    @Body() projectData: CreateProjectDto,
+  ): Promise<CreateProjectResponse> {
+    const project = await this.service.create({
+      name: projectData.name,
+    });
+
+    return {
+      data: this.transformer.transform(project),
+      meta: {},
     };
   }
 }

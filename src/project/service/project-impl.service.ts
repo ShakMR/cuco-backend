@@ -1,6 +1,7 @@
 import { ProjectService, ProjectServiceOptions } from './project.service';
 import { Project } from '../model/project.model';
 import { Injectable } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
 import { ProjectRepository } from '../repository/project.repository';
 import { ExpensesService } from '../../expenses/expenses.service';
 import {
@@ -8,6 +9,7 @@ import {
   EnrichedExpenseModel,
 } from '../../expenses/expense.model';
 import { LoggerService } from '../../logger/logger.service';
+import { CreateProjectDto } from '../dto/project.dto';
 
 @Injectable()
 export class ProjectImplService extends ProjectService {
@@ -65,5 +67,16 @@ export class ProjectImplService extends ProjectService {
     }
 
     return expense;
+  }
+
+  create(data: CreateProjectDto): Promise<Project> {
+    const uuid = uuidv4();
+    const newProject = this.repository.save({
+      name: data.name,
+      uuid,
+      isOpen: true,
+    });
+
+    return newProject;
   }
 }

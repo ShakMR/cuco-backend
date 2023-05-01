@@ -14,7 +14,7 @@ import {
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { LoggerService } from '../../logger/logger.service';
 import { ProjectService } from '../service/project.service';
-import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('projects', 'expenses')
 @Controller('/projects/:p_uuid/expenses')
@@ -57,8 +57,7 @@ export class ProjectExpensesController {
     };
   }
 
-  @ApiResponse({
-    status: 200,
+  @ApiOkResponse({
     description: 'List of projects',
     type: ExpenseResponse,
   })
