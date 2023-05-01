@@ -10,12 +10,12 @@ import {
 import { CurrencyService } from '../currency/currency.service';
 import { PaymentTypeService } from '../payment-type/payment-type.service';
 import { UserService } from '../user/user.service';
-import { GhostUser, User } from '../user/user.model';
+import { BaseUser } from '../user/user.model';
 import { Currency } from '../currency/currency.model';
 import { PaymentType } from '../payment-type/payment-type.model';
 
 type Relations = {
-  payer: User | GhostUser;
+  payer: BaseUser;
   currency: Currency;
   paymentType: PaymentType;
 };

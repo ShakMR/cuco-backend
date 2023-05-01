@@ -30,10 +30,7 @@ export class ExpensesImplRepository extends ExpensesRepository {
   }
 
   async getFromProject(projectId: number): Promise<ExpenseModel> {
-    const expenses = await this.db.findAll({ project_id: projectId }, [
-      'User',
-      'PaymentType',
-    ]);
+    const expenses = await this.db.findAll({ project_id: projectId });
 
     return expenses.map(ExpensesImplRepository.map);
   }

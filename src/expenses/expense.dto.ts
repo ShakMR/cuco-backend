@@ -1,23 +1,60 @@
-import { Currency } from '../currency/currency.model';
-import { PaymentType, PaymentTypeName } from '../payment-type/payment-type.model';
-import { GhostUser, User } from '../user/user.model';
+import { PaymentTypeName } from '../payment-type/payment-type.model';
+import { ResponseDto } from '../common/dto/response.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { CurrencyDto } from '../currency/currency.dto';
+import { PaymentTypeDto } from '../payment-type/payment-type.dto';
+import { UserDto } from '../user/user.dto';
 
-export interface ExpenseDto {
+export class ExpenseDto {
+  @ApiProperty()
   uuid: string;
+  @ApiProperty()
   amount: number;
+  @ApiProperty()
   concept: string;
+  @ApiProperty()
   createdAt: string | null;
-  currency?: Partial<Currency>;
+  @ApiProperty({
+    type: CurrencyDto,
+  })
+  currency?: CurrencyDto;
+  @ApiProperty()
   date: Date;
-  payer?: Partial<User | GhostUser>;
-  paymentType?: Partial<PaymentType>;
+  @ApiProperty({
+    type: UserDto,
+  })
+  payer?: UserDto;
+  @ApiProperty({
+    type: PaymentTypeDto,
+  })
+  paymentType?: PaymentTypeDto;
 }
 
-export interface CreateExpenseDto {
+export class CreateExpenseDto {
+  @ApiProperty()
   amount: number;
+  @ApiProperty()
   concept: string;
+  @ApiProperty()
   currency?: string;
+  @ApiProperty()
   date: Date;
-  projectUuid: string;
+  @ApiProperty({
+    enum: PaymentTypeName,
+  })
   paymentType?: PaymentTypeName;
+}
+
+export class ListExpenseResponse extends ResponseDto<ExpenseDto[]> {
+  @ApiProperty({
+    type: [ExpenseDto],
+  })
+  data: ExpenseDto[];
+}
+
+export class ExpenseResponse extends ResponseDto<ExpenseDto> {
+  @ApiProperty({
+    type: ExpenseDto,
+  })
+  data: ExpenseDto;
 }

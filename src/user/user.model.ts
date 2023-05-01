@@ -1,10 +1,16 @@
-type BaseUser = {
+export enum UserType {
+  user,
+  ghost,
+}
+
+export type BaseUser = {
   id: number;
   uuid: string;
   name: string;
   externalId: string;
   email: string;
   createdAt: Date;
+  type: UserType;
 };
 
 export type User = BaseUser & {

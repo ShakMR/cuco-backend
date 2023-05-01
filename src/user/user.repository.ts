@@ -1,5 +1,5 @@
-import { GhostUser, User } from './user.model';
+import { BaseUser } from './user.model';
 
 export abstract class UserRepository {
-  abstract getById(id: number): Promise<User | GhostUser>;
+  abstract getById(id: number): Promise<BaseUser>;
 }

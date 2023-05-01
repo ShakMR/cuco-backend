@@ -6,12 +6,17 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
-import { ResponseDto } from '../../common/dto/response.dto';
-import { CreateExpenseDto, ExpenseDto } from '../../expenses/expense.dto';
+import {
+  CreateExpenseDto,
+  ExpenseResponse,
+  ListExpenseResponse,
+} from '../../expenses/expense.dto';
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { LoggerService } from '../../logger/logger.service';
 import { ProjectService } from '../service/project.service';
+import { ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('projects', 'expenses')
 @Controller('/projects/:p_uuid/expenses')
 export class ProjectExpensesController {
   constructor(
@@ -22,11 +27,21 @@ export class ProjectExpensesController {
     logger.setContext(ProjectExpensesController.name);
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'Returns data for the expense matching uuid',
+    type: ListExpenseResponse,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
+  @ApiResponse({
+    status: 400,
+    description: 'Expense does not belong to project',
+  })
   @Get(':uuid')
   async getOne(
     @Param('p_uuid') projectUuid,
     @Param('uuid') uuid: string,
-  ): Promise<ResponseDto<ExpenseDto>> {
+  ): Promise<ExpenseResponse> {
     const expense = await this.service.getExpense(projectUuid, uuid);
 
     if (!expense) {
@@ -42,11 +57,17 @@ export class ProjectExpensesController {
     };
   }
 
+  @ApiResponse({
+    status: 200,
+    description: 'List of projects',
+    type: ExpenseResponse,
+  })
   @Post()
+  @ApiBody({ type: CreateExpenseDto })
   async postExpense(
     @Param('p_uuid') projectUuid: string,
     @Body() toCreate: CreateExpenseDto,
-  ): Promise<ResponseDto<ExpenseDto>> {
+  ): Promise<ExpenseResponse> {
     const expense = await this.service.addNewExpenseToProject(projectUuid, {
       amount: toCreate.amount,
       currencyName: toCreate.currency,

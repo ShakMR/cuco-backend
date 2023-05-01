@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { PaymentTypeRepository } from './payment-type.repository';
 import { DbClient } from '../db/db-client';
 import { PaymentType } from '../db/schemas';
-import { PaymentType as PaymentTypeModel } from './payment-type.model';
+import {
+  PaymentType as PaymentTypeModel,
+  PaymentTypeName,
+} from './payment-type.model';
 import { Currency } from '../currency/currency.model';
 import { LoggerService } from '../logger/logger.service';
 
@@ -29,11 +32,11 @@ export class PaymentTypeImplRepository extends PaymentTypeRepository {
 
     return {
       id: paymentType.id,
-      name: paymentType.name,
+      name: PaymentTypeName[paymentType.name],
     };
   }
 
-  async findOne(filter: { name: string }): Promise<Currency> {
+  async findOne(filter: { name: string }): Promise<PaymentTypeModel> {
     return this.db.find(filter);
   }
 }

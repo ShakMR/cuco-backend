@@ -1,17 +1,20 @@
-export interface ResponseDto<T, MetaT extends MetaDto = MetaDto> {
-  data: T;
-  meta: MetaT;
-}
+import { ApiProperty } from '@nestjs/swagger';
 
-export interface MetaDto {
-  pagination?: PaginationDto;
-  links?: LinkDto;
-}
 
-interface LinkDto {
+class LinkDto {
+  @ApiProperty()
   self: string;
+  @ApiProperty()
   next: string;
+  @ApiProperty()
   parent: string;
+}
+
+export class MetaDto {
+  @ApiProperty()
+  pagination?: PaginationDto;
+  @ApiProperty()
+  links?: LinkDto;
 }
 
 interface PaginationDto {
@@ -19,4 +22,11 @@ interface PaginationDto {
   next: string;
   previous: string;
   quantity: number;
+}
+
+export class ResponseDto<T> {
+  @ApiProperty()
+  data: T;
+  @ApiProperty()
+  meta: MetaDto;
 }

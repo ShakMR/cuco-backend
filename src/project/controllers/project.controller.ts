@@ -1,4 +1,3 @@
-import { ProjectListDto } from '../dto/project-list.dto';
 import {
   Controller,
   Get,
@@ -10,14 +9,19 @@ import {
 import { ProjectService } from '../service/project.service';
 import { Transformer } from '../../common/transformers/transformer';
 import { Project } from '../model/project.model';
-import { ProjectDto } from '../dto/project.dto';
-import { ResponseDto } from '../../common/dto/response.dto';
-import { ExpenseDto } from '../../expenses/expense.dto';
+import {
+  ProjectDto,
+  ProjectsResponse,
+  SingleProjectResponse,
+} from '../dto/project.dto';
+import { ListExpenseResponse } from '../../expenses/expense.dto';
 import { ExpensesService } from '../../expenses/expenses.service';
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { ProjectDependenciesDto } from '../dto/project-dependencies.dto';
 import { LoggerService } from '../../logger/logger.service';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('projects')
 @Controller('projects')
 export class ProjectController {
   constructor(
@@ -34,8 +38,12 @@ export class ProjectController {
     logger.setContext(ProjectController.name);
   }
 
+  @ApiOkResponse({
+    description: 'All the projects available',
+    type: ProjectsResponse,
+  })
   @Get()
-  async list(): Promise<ProjectListDto> {
+  async list() {
     this.logger.log('Getting projects');
     const projects = await this.service.getAll();
 
@@ -45,19 +53,24 @@ export class ProjectController {
     };
   }
 
+  @ApiOkResponse({
+    description: 'Project data',
+    type: SingleProjectResponse,
+  })
+  @ApiResponse({ status: 404, description: 'Project not found' })
   @Get('/:uuid')
   async get(
     @Param('uuid') uuid: string,
     @Query('includeExpenses') includeExpenses: boolean,
     @Query('includeCalculation') includeCalculations: boolean,
-  ): Promise<ResponseDto<ProjectDto>> {
+  ) {
     const project = await this.service.getByUuid(uuid, { includeExpenses });
 
     return {
       data: this.transformer.transform(project, {
         expenses: project.expenses.map((expense) =>
           this.expensesTransformer.transform(expense, {
-            project: { uuid }
+            project: { uuid },
           }),
         ),
       }),
@@ -65,12 +78,17 @@ export class ProjectController {
     };
   }
 
+  @ApiTags('expenses')
+  @ApiOkResponse({
+    description: 'List of expenses of a project',
+    type: ListExpenseResponse,
+  })
   @Get('/:uuid/expenses')
   async getExpenses(
     @Param('uuid') uuid: string,
     @Query('offset') offset = 0,
     @Query('howMany') howMany = 10,
-  ): Promise<ResponseDto<ExpenseDto[]>> {
+  ): Promise<ListExpenseResponse> {
     const project = await this.service.getByUuid(uuid);
     if (!project) {
       throw new HttpException(

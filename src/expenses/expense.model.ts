@@ -1,6 +1,6 @@
 import { Currency } from '../currency/currency.model';
 import { PaymentType } from '../payment-type/payment-type.model';
-import { GhostUser, User } from '../user/user.model';
+import { BaseUser, GhostUser, User } from '../user/user.model';
 
 export interface ExpenseModel {
   id: number;
@@ -10,7 +10,7 @@ export interface ExpenseModel {
   createdAt: string | null;
   currency?: Pick<Currency, 'id'>;
   date: Date;
-  payer?: Pick<User | GhostUser, 'id'>;
+  payer?: Pick<BaseUser, 'id'>;
   paymentType?: Pick<PaymentType, 'id'>;
   project: {
     id?: number;
@@ -20,7 +20,7 @@ export interface ExpenseModel {
 
 export interface EnrichedExpenseModel extends ExpenseModel {
   currency: Currency;
-  payer: User | GhostUser;
+  payer: BaseUser;
   paymentType: PaymentType;
 }
 
