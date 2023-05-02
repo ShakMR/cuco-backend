@@ -12,9 +12,11 @@ import LoggerModule from './logger/logger.module';
 })
 export class AppModule implements NestModule {
   static port: string;
+  static apiPrefix: string;
 
   constructor(configService: ConfigService) {
-    AppModule.port = configService.get('HTTP_PORT');
+    AppModule.port = configService.get('PORT');
+    AppModule.apiPrefix = configService.get('API_PREFIX');
   }
 
   configure(consumer: MiddlewareConsumer): any {

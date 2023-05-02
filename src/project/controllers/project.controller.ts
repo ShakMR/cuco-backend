@@ -9,21 +9,19 @@ import {
   Query,
 } from '@nestjs/common';
 import { ProjectService } from '../service/project.service';
-import { Transformer } from '../../common/transformers/transformer';
-import { Project } from '../model/project.model';
 import {
   CreateProjectDto,
   CreateProjectResponse,
-  ProjectDto,
   ProjectsResponse,
   SingleProjectResponse,
 } from '../dto/project.dto';
 import { ListExpenseResponse } from '../../expenses/expense.dto';
 import { ExpensesService } from '../../expenses/expenses.service';
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
-import { ProjectDependenciesDto } from '../dto/project-dependencies.dto';
 import { LoggerService } from '../../logger/logger.service';
 import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ProjectTransformer } from './project.transformer';
+import { ProjectResponseBuilder } from './project-response.builder';
 
 @ApiTags('projects')
 @Controller('projects')
@@ -31,30 +29,27 @@ export class ProjectController {
   constructor(
     private service: ProjectService,
     private expensesService: ExpensesService,
-    private transformer: Transformer<
-      Project,
-      ProjectDto,
-      ProjectDependenciesDto
-    >,
+    private transformer: ProjectTransformer,
     private expensesTransformer: ExpenseTransformer,
+    private responseBuilder: ProjectResponseBuilder,
     private logger: LoggerService,
   ) {
     logger.setContext(ProjectController.name);
   }
 
   @ApiOkResponse({
-    description: 'All the projects available',
+    description: 'All the projects available without expenses list',
     type: ProjectsResponse,
   })
   @Get()
-  async list() {
+  async list(): Promise<ProjectsResponse> {
     this.logger.log('Getting projects');
     const projects = await this.service.getAll();
 
-    return {
-      data: projects.map((item) => this.transformer.transform(item)),
-      meta: {},
-    };
+    return this.responseBuilder.buildListResponse(projects, {
+      offset: 0,
+      total: projects.length,
+    });
   }
 
   @ApiOkResponse({
@@ -70,16 +65,7 @@ export class ProjectController {
   ) {
     const project = await this.service.getByUuid(uuid, { includeExpenses });
 
-    return {
-      data: this.transformer.transform(project, {
-        expenses: project.expenses.map((expense) =>
-          this.expensesTransformer.transform(expense, {
-            project: { uuid },
-          }),
-        ),
-      }),
-      meta: {},
-    };
+    return this.responseBuilder.buildSingleResponse(project);
   }
 
   @ApiTags('expenses')
@@ -106,35 +92,11 @@ export class ProjectController {
       offset,
     });
 
-    return {
-      data: expenses.map((expense) =>
-        this.expensesTransformer.transform(expense, {
-          project: { uuid },
-        }),
-      ),
-      meta: {
-        pagination: {
-          totalItems: expenses.length,
-          quantity: expenses.length, // TODO do proper pagination
-          next: `/projects/${uuid}/expenses?howMany${howMany}&offset=${Math.min(
-            howMany + offset,
-            expenses.length,
-          )}`,
-          previous: `/projects/${uuid}/expenses?howMany${howMany}&offset=${Math.max(
-            offset - howMany,
-            0,
-          )}`,
-        },
-        links: {
-          next: `/projects/${uuid}/expenses?howMany${howMany}&offset=${Math.min(
-            howMany + offset,
-            expenses.length,
-          )}`,
-          parent: `/projects/${uuid}/`,
-          self: `/projects/${uuid}/expenses`,
-        },
-      },
-    };
+    return this.responseBuilder.buildExpensesResponse(expenses, project, {
+      offset,
+      quantity: howMany,
+      total: expenses.length,
+    });
   }
 
   @Post()
@@ -154,9 +116,6 @@ export class ProjectController {
       name: projectData.name,
     });
 
-    return {
-      data: this.transformer.transform(project),
-      meta: {},
-    };
+    return this.responseBuilder.buildSingleResponse(project);
   }
 }

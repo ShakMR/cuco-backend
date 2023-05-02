@@ -45,16 +45,16 @@ export class CreateExpenseDto {
   paymentType?: PaymentTypeName;
 }
 
-export class ListExpenseResponse extends ResponseDto<ExpenseDto[]> {
-  @ApiProperty({
-    type: [ExpenseDto],
-  })
-  data: ExpenseDto[];
-}
-
 export class ExpenseResponse extends ResponseDto<ExpenseDto> {
   @ApiProperty({
     type: ExpenseDto,
   })
   data: ExpenseDto;
+}
+
+export class ListExpenseResponse extends ResponseDto<ExpenseResponse[]> {
+  @ApiProperty({
+    type: [ExpenseResponse],
+  })
+  data: ExpenseResponse[];
 }

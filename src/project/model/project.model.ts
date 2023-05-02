@@ -1,8 +1,10 @@
+import { EnrichedExpenseModel } from '../../expenses/expense.model';
+
 export type Project = {
   id: number;
   name: string;
   uuid: string;
-  expenses: any[];
+  expenses: EnrichedExpenseModel[];
   isOpen: boolean;
   createdAt: Date;
 };

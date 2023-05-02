@@ -1,9 +1,9 @@
 import { Substitution, Transformer } from '../common/transformers/transformer';
-import { EnrichedExpenseModel, ExpenseModel } from './expense.model';
+import { EnrichedExpenseModel } from './expense.model';
 import { ExpenseDto } from './expense.dto';
 
 export class ExpenseTransformer
-  implements Transformer<ExpenseModel, ExpenseDto>
+  implements Transformer<EnrichedExpenseModel, ExpenseDto>
 {
   transform(
     { id, currency, paymentType, payer, ...rest }: EnrichedExpenseModel,

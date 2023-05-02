@@ -1,6 +1,6 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { ExpenseDto } from '../../expenses/expense.dto';
-import { MetaDto, ResponseDto } from '../../common/dto/response.dto';
+import { ListExpenseResponse } from '../../expenses/expense.dto';
+import { ResponseDto } from '../../common/dto/response.dto';
 
 export class ProjectDto {
   @ApiProperty()
@@ -8,9 +8,9 @@ export class ProjectDto {
   @ApiProperty()
   uuid: string;
   @ApiProperty({
-    type: [ExpenseDto],
+    type: ListExpenseResponse,
   })
-  expenses?: ExpenseDto[];
+  expenses?: ListExpenseResponse;
   @ApiProperty()
   isOpen: boolean;
   @ApiProperty()
@@ -29,6 +29,15 @@ export class SingleProjectResponse extends ResponseDto<ProjectDto> {
   data: ProjectDto;
 }
 
+export class SingleProjectWithoutExpenses extends ResponseDto<
+  Omit<ProjectDto, 'expenses'>
+> {
+  @ApiProperty({
+    type: OmitType(ProjectDto, ['expenses' as const]),
+  })
+  data: Omit<ProjectDto, 'expenses'>;
+}
+
 export class CreateProjectResponse extends ResponseDto<ProjectDto> {
   @ApiProperty({
     type: OmitType(ProjectDto, ['expenses'] as const),
@@ -36,10 +45,11 @@ export class CreateProjectResponse extends ResponseDto<ProjectDto> {
   data: Omit<ProjectDto, 'expenses'>;
 }
 
-export class ProjectsResponse extends ResponseDto<ProjectDto[]> {
+export class ProjectsResponse extends ResponseDto<
+  SingleProjectWithoutExpenses[]
+> {
   @ApiProperty({
-    type: [OmitType(ProjectDto, ['expenses' as const])],
+    type: [SingleProjectWithoutExpenses],
   })
-  data: Omit<ProjectDto, 'expenses'>[];
-  meta: MetaDto;
+  data: SingleProjectWithoutExpenses[];
 }

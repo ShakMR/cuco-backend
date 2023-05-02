@@ -1,6 +1,6 @@
 export enum UserType {
-  user,
-  ghost,
+  user = 'user',
+  ghost = 'ghost',
 }
 
 export type BaseUser = {

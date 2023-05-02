@@ -4,6 +4,6 @@ export type PaymentType = {
 };
 
 export enum PaymentTypeName {
-  'debit',
-  'credit',
+  'debit' = 'debit',
+  'credit' = 'credit',
 }
