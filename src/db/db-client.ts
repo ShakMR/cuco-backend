@@ -11,5 +11,5 @@ export abstract class DbClient<Schema, ID = number, CreateSchema = any> {
 
   abstract findAll(filters: Filter<Schema>, extraSelect?: string[]);
 
-  abstract save(newDate: CreateSchema): Promise<Schema>;
+  abstract save(newData: CreateSchema): Promise<Schema>;
 }

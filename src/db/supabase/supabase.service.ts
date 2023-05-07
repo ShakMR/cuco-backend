@@ -79,8 +79,8 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
     return response.data;
   }
 
-  async save(newDate: any): Promise<Schema> {
-    const response = await this.table.insert(newDate).select();
+  async save(newData: any): Promise<Schema> {
+    const response = await this.table.insert(newData).select();
 
     if (response.error) {
       throw response.error;
