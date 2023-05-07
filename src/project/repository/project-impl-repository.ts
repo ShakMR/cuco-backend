@@ -48,4 +48,10 @@ export class ProjectImplRepository extends ProjectRepository {
 
     return projects.map(ProjectImplRepository.map);
   }
+
+  async search(param: { shortName: string }) {
+    const projects = await this.db.findAll({ short_name: param.shortName });
+
+    return projects.map(ProjectImplRepository.map);
+  }
 }

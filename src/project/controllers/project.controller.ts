@@ -43,8 +43,23 @@ export class ProjectController {
   })
   @Get()
   async list(): Promise<ProjectsResponse> {
-    this.logger.log('Getting projects');
     const projects = await this.service.getAll();
+
+    return this.responseBuilder.buildListResponse(projects, {
+      offset: 0,
+      total: projects.length,
+    });
+  }
+
+  @Get('search')
+  @ApiOkResponse({
+    type: ProjectsResponse,
+  })
+  async searchProject(
+    @Query('shortName') shortName: string,
+  ): Promise<ProjectsResponse> {
+    console.log(shortName);
+    const projects = await this.service.searchByShortName(shortName);
 
     return this.responseBuilder.buildListResponse(projects, {
       offset: 0,

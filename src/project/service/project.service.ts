@@ -28,4 +28,6 @@ export abstract class ProjectService {
   abstract create(project: CreateProjectDto): Promise<Project>;
 
   abstract getAllById(projectsIds: number[]): Promise<Project[]>;
+
+  abstract searchByShortName(shortName: string);
 }

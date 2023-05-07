@@ -83,4 +83,8 @@ export class ProjectImplService extends ProjectService {
   getAllById(projectsIds: number[]): Promise<Project[]> {
     return this.repository.findProjectsInListById(projectsIds);
   }
+
+  async searchByShortName(shortName: string) {
+    return this.repository.search({ shortName });
+  }
 }

@@ -3,6 +3,7 @@ import { UserRepository } from './user.repository';
 import { DbClient } from '../db/db-client';
 import { User } from '../db/schemas';
 import { BaseUser, UserType } from './user.model';
+import { UserNotFoundException } from './exceptions/user-not-found.exception';
 
 @Injectable()
 export class UserImplRespository extends UserRepository {
@@ -35,6 +36,10 @@ export class UserImplRespository extends UserRepository {
   async getByUuid(uuid: string) {
     const baseUser = await this.db.find({ uuid });
 
+    if (!baseUser) {
+      throw new UserNotFoundException({ uuid });
+    }
+
     return UserImplRespository.map(baseUser);
   }
 
@@ -44,6 +49,8 @@ export class UserImplRespository extends UserRepository {
       external_id: externalId,
       ...rest,
     });
+
+    console.log(user);
 
     return UserImplRespository.map(user);
   }
