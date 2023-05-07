@@ -7,6 +7,7 @@ import { MetaDto } from '../../common/dto/response.dto';
 import { EnrichedExpenseModel } from '../../expenses/expense.model';
 import { ProjectsResponse, SingleProjectResponse } from '../dto/project.dto';
 import { ListExpenseResponse } from '../../expenses/expense.dto';
+import { replaceInTemplate } from '../../common/utils/replaceInTemplate';
 
 type Pagination = {
   offset: number;
@@ -173,10 +174,6 @@ export class ProjectResponseBuilder {
   }
 
   private buildLink(template: string, keys: Record<string, string | number>) {
-    let resultLink = template;
-    for (const [key, value] of Object.entries(keys)) {
-      resultLink = resultLink.replace(`:${key}:`, `${value}`);
-    }
-    return resultLink;
+    return replaceInTemplate(template, keys);
   }
 }

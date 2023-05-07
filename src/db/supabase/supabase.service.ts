@@ -1,8 +1,5 @@
 import { DbClient, Filter } from '../db-client';
-import {
-  SupabaseClient as SBClient,
-  SupabaseClient,
-} from '@supabase/supabase-js';
+import { SupabaseClient } from '@supabase/supabase-js';
 import { PostgrestQueryBuilder } from '@supabase/postgrest-js';
 import { GenericSchema } from '@supabase/supabase-js/dist/main/lib/types';
 import { Injectable, Scope } from '@nestjs/common';
@@ -13,6 +10,8 @@ import { LoggerService } from '../../logger/logger.service';
 function buildSelectExtra(selectExtra: string[]) {
   return ['*', ...selectExtra.map((extra) => `${extra}(*)`)].join(', ');
 }
+
+export class SBNotFound extends Error {}
 
 @Injectable({
   scope: Scope.TRANSIENT,
@@ -51,8 +50,12 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   async find(
     filters: Filter<Schema>,
     extraSelect: string[] = [],
-  ): Promise<any> {
+  ): Promise<Schema> {
     const response = await this.findAll(filters, extraSelect);
+
+    if (!response[0]) {
+      throw new SBNotFound();
+    }
 
     return response[0];
   }
@@ -60,7 +63,7 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   async findAll(
     filters: Filter<Schema>,
     extraSelect: string[] = [],
-  ): Promise<any[]> {
+  ): Promise<Schema[]> {
     const queryBuilder = this.table.select(buildSelectExtra(extraSelect));
     for (const filter in filters) {
       queryBuilder.eq(filter, filters[filter]);
@@ -76,7 +79,7 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
         response.data.length
       }`,
     );
-    return response.data;
+    return response.data as unknown as Schema[];
   }
 
   async save(newData: any): Promise<Schema> {

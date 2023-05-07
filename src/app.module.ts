@@ -5,10 +5,18 @@ import * as cors from 'cors';
 
 import { ProjectModule } from './project/project.module';
 import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
+import { ParticipationModule } from './participation/participation.module';
 import LoggerModule from './logger/logger.module';
+import { UserModule } from './user/user.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), ProjectModule, LoggerModule],
+  imports: [
+    ConfigModule.forRoot(),
+    ProjectModule,
+    LoggerModule,
+    ParticipationModule,
+    UserModule,
+  ],
 })
 export class AppModule implements NestModule {
   static port: string;

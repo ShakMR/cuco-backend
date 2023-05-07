@@ -101,6 +101,7 @@ export interface Database {
           id: number;
           isOpen: boolean | null;
           name: string | null;
+          short_name: string;
           uuid: string;
         };
         Insert: {
@@ -108,6 +109,7 @@ export interface Database {
           id?: number;
           isOpen?: boolean | null;
           name?: string | null;
+          short_name?: string;
           uuid: string;
         };
         Update: {
@@ -115,6 +117,7 @@ export interface Database {
           id?: number;
           isOpen?: boolean | null;
           name?: string | null;
+          short_name?: string;
           uuid?: string;
         };
       };
@@ -205,7 +208,7 @@ export interface Database {
           id?: number;
           is_ghost?: boolean;
           name?: string | null;
-          uuid: string;
+          uuid?: string;
         };
       };
     };

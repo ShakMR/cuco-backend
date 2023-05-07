@@ -4,7 +4,6 @@ type PublicTables = Database['public']['Tables'];
 
 export type Project = PublicTables['Project']['Row'];
 export type ProjectCreate = PublicTables['Project']['Insert'];
-export type Participation = PublicTables['Participation']['Row'];
 export type Statistics = PublicTables['Statics']['Row'];
 export type Passport = PublicTables['Passport']['Row'];
 
@@ -15,6 +14,9 @@ export type ExpenseCreate = PublicTables['Spending']['Insert'];
 export type User = PublicTables['User']['Row'];
 export type PaymentType = PublicTables['PaymentType']['Row'];
 export type Currency = PublicTables['Currency']['Row'];
+
+export type Participation = PublicTables['Participation']['Row'];
+export type ParticipationCreate = PublicTables['Participation']['Insert'];
 
 type withUser = {
   User: User;

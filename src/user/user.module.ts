@@ -24,6 +24,6 @@ import { ConfigModule } from '@nestjs/config';
     UserTransformer,
     UserResponseBuilder,
   ],
-  exports: [UserService],
+  exports: [UserService, UserResponseBuilder],
 })
 export class UserModule {}

@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ProjectController } from './controllers/project.controller';
 import { ProjectService } from './service/project.service';
 import { ProjectTransformer } from './controllers/project.transformer';
-import { Transformer } from '../common/transformers/transformer';
 import { ProjectRepository } from './repository/project.repository';
 import { ProjectImplRepository } from './repository/project-impl-repository';
 import { DbModule } from '../db/db.module';
@@ -28,5 +27,6 @@ import { ConfigModule } from '@nestjs/config';
     ProjectResponseBuilder,
     ProjectTransformer,
   ],
+  exports: [ProjectService, ProjectResponseBuilder],
 })
 export class ProjectModule {}
