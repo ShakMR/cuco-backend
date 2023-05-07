@@ -97,4 +97,16 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
 
     return response.data[0];
   }
+
+  async findSet(column: keyof Schema, values: any[]): Promise<Schema[]> {
+    const { data, error } = await this.table
+      .select()
+      .in(`${column as string}`, values);
+
+    if (error) {
+      throw error;
+    }
+
+    return data;
+  }
 }

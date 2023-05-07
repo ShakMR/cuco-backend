@@ -10,4 +10,6 @@ export abstract class ParticipationRepository {
     userId: number,
     projectId: number,
   ): Promise<ParticipationModel>;
+
+  abstract findByUser(id): Promise<ParticipationModel[]>;
 }

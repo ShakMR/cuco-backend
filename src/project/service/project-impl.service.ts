@@ -79,4 +79,8 @@ export class ProjectImplService extends ProjectService {
 
     return newProject;
   }
+
+  getAllById(projectsIds: number[]): Promise<Project[]> {
+    return this.repository.findProjectsInListById(projectsIds);
+  }
 }

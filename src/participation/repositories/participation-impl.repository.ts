@@ -3,12 +3,9 @@ import { ParticipationRepository } from './participation.repository';
 import { DbClient } from '../../db/db-client';
 import { Participation, ParticipationCreate } from '../../db/schemas';
 import { Participation as ParticipationModel } from '../participation.model';
-import { ParticipationImplService } from '../services/participation-impl.service';
 
 @Injectable()
 export class ParticipationImplRepository extends ParticipationRepository {
-  ç;
-
   constructor(private db: DbClient<Participation>) {
     super();
   }
@@ -21,6 +18,7 @@ export class ParticipationImplRepository extends ParticipationRepository {
     return {
       id: participation.id,
       createdAt: new Date(participation.created_at),
+      share: participation.share,
       user: {
         id: participation.user_id,
       },
@@ -46,5 +44,10 @@ export class ParticipationImplRepository extends ParticipationRepository {
     });
 
     return ParticipationImplRepository.map(participation);
+  }
+
+  async findByUser(id): Promise<ParticipationModel[]> {
+    const res = await this.db.findAll({ user_id: id });
+    return res.map(ParticipationImplRepository.map);
   }
 }

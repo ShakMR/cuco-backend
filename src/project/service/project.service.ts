@@ -26,4 +26,6 @@ export abstract class ProjectService {
   ): Promise<EnrichedExpenseModel>;
 
   abstract create(project: CreateProjectDto): Promise<Project>;
+
+  abstract getAllById(projectsIds: number[]): Promise<Project[]>;
 }

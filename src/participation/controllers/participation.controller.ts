@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   NotFoundException,
+  Param,
   Post,
   Query,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { ParticipationResponseBuilder } from './participation-response.builder';
 import {
   CreateParticipationDto,
   SingleParticipationResponse,
+  UserParticipationResponse,
 } from '../participation.dto';
 import { ParticipationService } from '../services/participation.service';
 import { LoggerService } from '../../logger/logger.service';
@@ -66,5 +68,18 @@ export class ParticipationController {
 
       throw e;
     }
+  }
+
+  @Get('/user/:uuid')
+  @ApiOkResponse({
+    type: UserParticipationResponse,
+  })
+  async getUserParticipation(
+    @Param('uuid') uuid: string,
+  ): Promise<UserParticipationResponse> {
+    const userParticipation = await this.service.getParticipationForUser(uuid);
+    return this.responseBuilder.buildUserParticipationResponse(
+      userParticipation,
+    );
   }
 }

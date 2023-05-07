@@ -42,4 +42,10 @@ export class ProjectImplRepository extends ProjectRepository {
   async save(project: ProjectCreate) {
     return ProjectImplRepository.map(await this.db.save(project));
   }
+
+  async findProjectsInListById(projectIds: number[]): Promise<ProjectModel[]> {
+    const projects = await this.db.findSet('id', projectIds);
+
+    return projects.map(ProjectImplRepository.map);
+  }
 }

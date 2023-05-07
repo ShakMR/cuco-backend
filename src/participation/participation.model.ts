@@ -5,10 +5,19 @@ export type Participation = {
   id: number;
   user: Pick<BaseUser, 'id'>;
   project: Pick<Project, 'id'>;
+  share: number;
   createdAt: Date;
 };
 
 export type ParticipationWithUserAndProject = Participation & {
   user: BaseUser;
   project: Project;
+};
+
+export type UserParticipation = {
+  user: BaseUser;
+  participation: {
+    project: Project;
+    share: number;
+  }[];
 };

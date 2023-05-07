@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { ParticipationService } from './participation.service';
 import { CreateParticipationDto } from '../participation.dto';
-import { ParticipationWithUserAndProject } from '../participation.model';
+import {
+  ParticipationWithUserAndProject,
+  UserParticipation,
+} from '../participation.model';
 import { UserService } from '../../user/user.service';
 import { ParticipationRepository } from '../repositories/participation.repository';
 import { ProjectService } from '../../project/service/project.service';
@@ -28,11 +31,18 @@ export class ParticipationImplService extends ParticipationService {
       throw new Error('Project is closed, cannot add new users');
     }
 
-    const newParticipation = await this.repository.save({
-      user_id: user.id,
-      project_id: project.id,
-      share: 50,
-    });
+    const existingParticipation = await this.repository.findByUserAndProject(
+      user.id,
+      project.id,
+    );
+    let newParticipation = existingParticipation;
+    if (!existingParticipation) {
+      newParticipation = await this.repository.save({
+        user_id: user.id,
+        project_id: project.id,
+        share: 50,
+      });
+    }
 
     return {
       ...newParticipation,
@@ -58,5 +68,23 @@ export class ParticipationImplService extends ParticipationService {
     } catch (e) {
       throw new ParticipationNotFoundException({ userUuid, projectUuid });
     }
+  }
+
+  async getParticipationForUser(uuid: string): Promise<UserParticipation> {
+    const user = await this.userService.getByUuid(uuid);
+
+    const participation = await this.repository.findByUser(user.id);
+
+    const projectsIds = participation.map(({ project }) => project.id);
+
+    const projects = await this.projectService.getAllById(projectsIds);
+
+    return {
+      user,
+      participation: participation.map(({ share }, index) => ({
+        share,
+        project: projects[index],
+      })),
+    };
   }
 }

@@ -1,7 +1,8 @@
-import { SingleUserResponse, UserDto } from '../user/user.dto';
-import { ApiProperty, PartialType } from '@nestjs/swagger';
-import { ProjectDto, SingleProjectResponse } from '../project/dto/project.dto';
+import { SingleUserResponse } from '../user/user.dto';
+import { ApiProperty } from '@nestjs/swagger';
+import { SingleProjectResponse } from '../project/dto/project.dto';
 import { ResponseDto } from '../common/dto/response.dto';
+import { ProjectListDto } from '../project/dto/project-list.dto';
 
 export class ParticipationDto {
   @ApiProperty({
@@ -30,4 +31,30 @@ export class CreateParticipationDto {
   userUuid: string;
   @ApiProperty()
   projectUuid: string;
+}
+
+export class ParticipationInProject {
+  @ApiProperty({
+    type: ProjectListDto,
+  })
+  project: SingleProjectResponse;
+  share: number;
+}
+
+export class UserParticipationDto {
+  @ApiProperty({
+    type: SingleProjectResponse,
+  })
+  user: SingleUserResponse;
+  @ApiProperty({
+    type: [ResponseDto<ParticipationInProject>],
+  })
+  participation: ResponseDto<ParticipationInProject>[];
+}
+
+export class UserParticipationResponse extends ResponseDto<UserParticipationDto> {
+  @ApiProperty({
+    type: UserParticipationDto,
+  })
+  data: UserParticipationDto;
 }

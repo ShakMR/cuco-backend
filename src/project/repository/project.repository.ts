@@ -1,4 +1,5 @@
 import { ProjectCreate } from '../../db/schemas';
+import { Project as ProjectModel } from '../model/project.model';
 
 export abstract class ProjectRepository {
   abstract getAll();
@@ -6,4 +7,8 @@ export abstract class ProjectRepository {
   abstract getByUuid(uuid: string);
 
   abstract save(project: ProjectCreate);
+
+  abstract findProjectsInListById(
+    projectIds: number[],
+  ): Promise<ProjectModel[]>;
 }
