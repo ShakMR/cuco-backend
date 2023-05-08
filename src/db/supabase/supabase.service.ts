@@ -22,6 +22,7 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
 > {
   private table: PostgrestQueryBuilder<Schema, any>;
   private tableName: string;
+  private client: SupabaseClient;
 
   constructor(
     private connector: DbConnector<SupabaseClient<Database>>,
@@ -29,12 +30,15 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   ) {
     super();
     logger.setContext(SupabaseService.name);
+    this.client = this.connector.getClient();
   }
 
   async init(tableName: string) {
-    const client = this.connector.getClient();
-    this.table = await client.from(tableName);
     this.tableName = tableName;
+  }
+
+  private async getClient() {
+    return this.client.from(this.tableName);
   }
 
   async getAll(): Promise<Schema[]> {
@@ -64,7 +68,8 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
     filters: Filter<Schema>,
     extraSelect: string[] = [],
   ): Promise<Schema[]> {
-    const queryBuilder = this.table.select(buildSelectExtra(extraSelect));
+    const tableClient = await this.getClient();
+    const queryBuilder = tableClient.select(buildSelectExtra(extraSelect));
     for (const filter in filters) {
       queryBuilder.eq(filter, filters[filter]);
     }
@@ -83,7 +88,8 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   }
 
   async save(newData: any): Promise<Schema> {
-    const response = await this.table.insert(newData).select();
+    const tableClient = await this.getClient();
+    const response = await tableClient.insert(newData).select();
 
     if (response.error) {
       throw response.error;
