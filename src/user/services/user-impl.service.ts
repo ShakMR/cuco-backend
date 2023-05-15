@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidV4 } from 'uuid';
 import { UserService } from './user.service';
-import { UserRepository } from './user.repository';
-import { BaseUser } from './user.model';
-import { CreateUserDto } from './user.dto';
+import { UserRepository } from '../repositories/user.repository';
+import { BaseUser } from '../user.model';
+import { CreateUserDto } from '../user.dto';
 
 @Injectable()
 export class UserImplService extends UserService {
@@ -21,8 +21,6 @@ export class UserImplService extends UserService {
 
   create(userDto: CreateUserDto): Promise<BaseUser> {
     const uuid = uuidV4();
-    if (!!userDto.name) {
-    }
     return this.repository.save({
       ...userDto,
       uuid,

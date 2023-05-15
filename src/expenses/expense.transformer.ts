@@ -1,6 +1,6 @@
 import { Substitution, Transformer } from '../common/transformers/transformer';
-import { EnrichedExpenseModel } from './expense.model';
 import { ExpenseDto } from './expense.dto';
+import { EnrichedExpenseModel } from './expense.model';
 
 export class ExpenseTransformer
   implements Transformer<EnrichedExpenseModel, ExpenseDto>

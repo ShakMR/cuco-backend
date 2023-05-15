@@ -61,9 +61,10 @@ export class ProjectImplService extends ProjectService {
     const project = await this.getByUuid(projectUuid);
     const expense = await this.expensesService.getByUuid(uuid);
     if (!expense || project.id !== expense.project.id) {
-      this.logger.warn(
-        `Expense with uuid ${uuid} in project with uuid ${projectUuid}`,
+      this.logger.error(
+        `Expense with uuid ${uuid} does not belong to project with uuid ${projectUuid}`,
       );
+      throw new Error("TODO: add proper error handling");
     }
 
     return expense;
@@ -84,7 +85,23 @@ export class ProjectImplService extends ProjectService {
     return this.repository.findProjectsInListById(projectsIds);
   }
 
-  async searchByShortName(shortName: string) {
-    return this.repository.search({ shortName });
+  async searchByShortName(
+    shortName: string,
+    options: ProjectServiceOptions,
+  ): Promise<Project[]> {
+    const projects = await this.repository.search({ shortName });
+
+    let expenses = [];
+    if (options?.includeExpenses) {
+      const promises = projects.map((project) =>
+        this.expensesService.getFromProject(project.id),
+      );
+      expenses = await Promise.all(promises);
+    }
+
+    return projects.map((project, index) => ({
+      ...project,
+      expenses: expenses[index],
+    }));
   }
 }

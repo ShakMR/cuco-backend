@@ -37,13 +37,15 @@ export class ParticipationImplRepository extends ParticipationRepository {
   async findByUserAndProject(
     userId: number,
     projectId: number,
-  ): Promise<ParticipationModel> {
+  ): Promise<ParticipationModel | undefined> {
     const participation = await this.db.find({
       user_id: userId,
       project_id: projectId,
     });
 
-    return ParticipationImplRepository.map(participation);
+    return participation
+      ? ParticipationImplRepository.map(participation)
+      : undefined;
   }
 
   async findByUser(id): Promise<ParticipationModel[]> {

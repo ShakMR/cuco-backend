@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UserImplService } from './user-impl.service';
-import { UserRepository } from './user.repository';
-import { UserImplRespository } from './user-impl.respository';
+import { UserService } from './services/user.service';
+import { UserImplService } from './services/user-impl.service';
+import { UserRepository } from './repositories/user.repository';
+import { UserImplRepository } from './repositories/user-impl-repository.service';
 import { DbModule } from '../db/db.module';
 import { UserController } from './controllers/user.controller';
 import { UserTransformer } from './controllers/user.transformer';
@@ -19,7 +19,7 @@ import { ConfigModule } from '@nestjs/config';
     },
     {
       provide: UserRepository,
-      useClass: UserImplRespository,
+      useClass: UserImplRepository,
     },
     UserTransformer,
     UserResponseBuilder,

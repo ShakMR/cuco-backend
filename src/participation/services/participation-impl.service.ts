@@ -5,7 +5,7 @@ import {
   ParticipationWithUserAndProject,
   UserParticipation,
 } from '../participation.model';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/services/user.service';
 import { ParticipationRepository } from '../repositories/participation.repository';
 import { ProjectService } from '../../project/service/project.service';
 import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
@@ -77,7 +77,10 @@ export class ParticipationImplService extends ParticipationService {
 
     const projectsIds = participation.map(({ project }) => project.id);
 
-    const projects = await this.projectService.getAllById(projectsIds);
+    const projects =
+      projectsIds.length > 0
+        ? await this.projectService.getAllById(projectsIds)
+        : [];
 
     return {
       user,

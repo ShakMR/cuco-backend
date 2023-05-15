@@ -57,9 +57,12 @@ export class ProjectController {
   })
   async searchProject(
     @Query('shortName') shortName: string,
+    @Query('includeExpenses') includeExpenses: boolean,
   ): Promise<ProjectsResponse> {
     console.log(shortName);
-    const projects = await this.service.searchByShortName(shortName);
+    const projects = await this.service.searchByShortName(shortName, {
+      includeExpenses,
+    });
 
     return this.responseBuilder.buildListResponse(projects, {
       offset: 0,

@@ -1,9 +1,8 @@
 import { Body, Controller, Get, Injectable, Param, Post } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, SingleUserResponse } from '../user.dto';
-import { UserService } from '../user.service';
+import { UserService } from '../services/user.service';
 import { UserResponseBuilder } from './user-response.builder';
-import { SingleProjectResponse } from '../../project/dto/project.dto';
 
 @ApiTags('users')
 @Controller('users')

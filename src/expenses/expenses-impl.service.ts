@@ -9,7 +9,7 @@ import {
 } from './expense.model';
 import { CurrencyService } from '../currency/currency.service';
 import { PaymentTypeService } from '../payment-type/payment-type.service';
-import { UserService } from '../user/user.service';
+import { UserService } from '../user/services/user.service';
 import { BaseUser } from '../user/user.model';
 import { Currency } from '../currency/currency.model';
 import { PaymentType } from '../payment-type/payment-type.model';

@@ -6,12 +6,13 @@ import { Injectable, Scope } from '@nestjs/common';
 import { DbConnector } from '../db-connector';
 import { Database } from './database.types';
 import { LoggerService } from '../../logger/logger.service';
+import EntityNotFoundException from '../exception/entity-not-found.exception';
 
 function buildSelectExtra(selectExtra: string[]) {
   return ['*', ...selectExtra.map((extra) => `${extra}(*)`)].join(', ');
 }
 
-export class SBNotFound extends Error {}
+export class SBNotFound extends EntityNotFoundException {}
 
 @Injectable({
   scope: Scope.TRANSIENT,
@@ -46,9 +47,23 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   }
 
   async getById(id: number): Promise<Schema> {
-    const response = await this.find({ id } as unknown as Schema);
+    const response = await this.getBy({ id } as unknown as Schema);
+
+    if (!response) {
+      throw new SBNotFound();
+    }
 
     return response;
+  }
+
+  async getBy(filters: Filter<Schema>) {
+    const response = await this.findAll(filters);
+
+    if (!response || !response[0]) {
+      throw new SBNotFound();
+    }
+
+    return response[0];
   }
 
   async find(
@@ -56,10 +71,6 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
     extraSelect: string[] = [],
   ): Promise<Schema> {
     const response = await this.findAll(filters, extraSelect);
-
-    if (!response[0]) {
-      throw new SBNotFound();
-    }
 
     return response[0];
   }
@@ -99,7 +110,8 @@ export class SupabaseService<Schema extends GenericSchema> extends DbClient<
   }
 
   async findSet(column: keyof Schema, values: any[]): Promise<Schema[]> {
-    const { data, error } = await this.table
+    const tableClient = await this.getClient();
+    const { data, error } = await tableClient
       .select()
       .in(`${column as string}`, values);
 

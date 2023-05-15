@@ -21,6 +21,7 @@ export class ProjectTransformer {
         item.expenses && item.expenses.length
           ? depsTransformers.expenses(item.expenses, item)
           : undefined,
+      shortName: item.shortName,
       createdAt: item.createdAt,
       isOpen: item.isOpen,
     };

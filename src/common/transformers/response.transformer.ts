@@ -1,5 +1,5 @@
-import { Transformer } from './transformer';
 import { MetaDto, ResponseDto } from '../dto/response.dto';
+import { Transformer } from './transformer';
 
 export class ResponseTransformer<Input, Output>
   implements Transformer<Input, ResponseDto<Output>, MetaDto>

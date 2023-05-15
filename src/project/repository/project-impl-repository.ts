@@ -16,9 +16,10 @@ export class ProjectImplRepository extends ProjectRepository {
     this.db.init('Project');
   }
 
-  static map({ created_at, ...rest }: Project): ProjectModel {
+  static map({ created_at, short_name, ...rest }: Project): ProjectModel {
     return {
       ...rest,
+      shortName: short_name,
       createdAt: new Date(created_at),
       expenses: [],
     };
@@ -31,7 +32,7 @@ export class ProjectImplRepository extends ProjectRepository {
 
   async getByUuid(uuid: string): Promise<ProjectModel> {
     try {
-      return ProjectImplRepository.map(await this.db.find({ uuid }));
+      return ProjectImplRepository.map(await this.db.getBy({ uuid }));
     } catch (e) {
       if (e instanceof SBNotFound) {
         throw new ProjectNotFoundException({ uuid });

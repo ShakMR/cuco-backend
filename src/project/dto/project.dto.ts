@@ -15,6 +15,8 @@ export class ProjectDto {
   isOpen: boolean;
   @ApiProperty()
   createdAt: Date;
+  @ApiProperty()
+  shortName: string;
 }
 
 export class CreateProjectDto {

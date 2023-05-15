@@ -1,9 +1,9 @@
-import { Project } from '../model/project.model';
 import {
   CreateExpenseModel,
   EnrichedExpenseModel,
 } from '../../expenses/expense.model';
 import { CreateProjectDto } from '../dto/project.dto';
+import { Project } from '../model/project.model';
 
 export type ProjectServiceOptions = { includeExpenses };
 
@@ -29,5 +29,5 @@ export abstract class ProjectService {
 
   abstract getAllById(projectsIds: number[]): Promise<Project[]>;
 
-  abstract searchByShortName(shortName: string);
+  abstract searchByShortName(shortName: string, options: ProjectServiceOptions);
 }

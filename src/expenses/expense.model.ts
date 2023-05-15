@@ -7,7 +7,7 @@ export interface ExpenseModel {
   uuid: string;
   amount: number;
   concept: string;
-  createdAt: string | null;
+  createdAt: Date;
   currency?: Pick<Currency, 'id'>;
   date: Date;
   payer?: Pick<BaseUser, 'id'>;

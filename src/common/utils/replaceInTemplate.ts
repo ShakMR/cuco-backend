@@ -7,4 +7,4 @@ export const replaceInTemplate = (
     result = result.replace(`:${key}:`, `${value}`);
   }
   return result;
-}
+};

@@ -1,4 +1,9 @@
 {
   "singleQuote": true,
-  "trailingComma": "all"
+  "trailingComma": "all",
+  "importOrder": ["^@core/(.*)$", "<THIRD_PARTY_MODULES>", "^[./]"],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrderGroupNamespaceSpecifiers": true,
+  "importOrderCaseInsensitive": true
 }

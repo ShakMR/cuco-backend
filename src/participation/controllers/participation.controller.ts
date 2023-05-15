@@ -44,7 +44,7 @@ export class ParticipationController {
         throw new NotFoundException(this.responseBuilder.buildError(e));
       }
 
-      throw e;
+      throw new Error(e);
     }
   }
 

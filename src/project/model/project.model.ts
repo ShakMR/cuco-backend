@@ -6,5 +6,6 @@ export type Project = {
   uuid: string;
   expenses: EnrichedExpenseModel[];
   isOpen: boolean;
+  shortName: string;
   createdAt: Date;
 };
