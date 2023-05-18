@@ -1,8 +1,9 @@
-import { SingleUserResponse } from '../user/user.dto';
 import { ApiProperty } from '@nestjs/swagger';
-import { SingleProjectResponse } from '../project/dto/project.dto';
+
 import { ResponseDto } from '../common/dto/response.dto';
 import { ProjectListDto } from '../project/dto/project-list.dto';
+import { SingleProjectResponse } from '../project/dto/project.dto';
+import { SingleUserResponse } from '../user/user.dto';
 
 export class ParticipationDto {
   @ApiProperty({

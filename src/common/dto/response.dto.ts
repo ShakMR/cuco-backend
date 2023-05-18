@@ -18,7 +18,7 @@ class PaginationDto {
   quantity: number;
 }
 
-export class  MetaDto {
+export class MetaDto {
   @ApiProperty()
   pagination?: PaginationDto;
   @ApiProperty()

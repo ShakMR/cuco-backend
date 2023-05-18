@@ -1,8 +1,9 @@
-import { CurrencyRepository } from './currency.repository';
+import { Injectable } from '@nestjs/common';
+
 import { DbClient } from '../db/db-client';
 import { Currency } from '../db/schemas';
 import { Currency as CurrencyModel } from './currency.model';
-import { Injectable } from '@nestjs/common';
+import { CurrencyRepository } from './currency.repository';
 
 @Injectable()
 export class CurrencyImplRepository extends CurrencyRepository {

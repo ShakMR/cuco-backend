@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { ProjectTransformer } from './project.transformer';
-import { ExpenseTransformer } from '../../expenses/expense.transformer';
-import { Project } from '../model/project.model';
 import { ConfigService } from '@nestjs/config';
+
 import { MetaDto } from '../../common/dto/response.dto';
-import { EnrichedExpenseModel } from '../../expenses/expense.model';
-import { ProjectsResponse, SingleProjectResponse } from '../dto/project.dto';
-import { ListExpenseResponse } from '../../expenses/expense.dto';
 import { replaceInTemplate } from '../../common/utils/replaceInTemplate';
+import { ListExpenseResponse } from '../../expenses/dto/expense.dto';
+import { EnrichedExpenseModel } from '../../expenses/expense.model';
+import { ExpenseTransformer } from '../../expenses/expense.transformer';
+import { ProjectsResponse, SingleProjectResponse } from '../dto/project.dto';
+import { Project } from '../model/project.model';
+import { ProjectTransformer } from './project.transformer';
 
 type Pagination = {
   offset: number;
@@ -21,7 +22,7 @@ export class ProjectResponseBuilder {
   private readonly projectListPathTemplate: string =
     '?offset=:offset:&quantity=:quantity:';
   private readonly expensesListPathTemplate: string =
-    '/expenses?offset=:offset:&quantity=:quantity:';
+    '/:p_uuid:/expenses?offset=:offset:&quantity=:quantity:';
 
   constructor(
     private transformer: ProjectTransformer,
@@ -39,16 +40,24 @@ export class ProjectResponseBuilder {
     project: Project,
     { totalExpenses }: { totalExpenses?: number } = {},
   ): SingleProjectResponse {
-    return {
-      data: this.transformer.transform(project, {
-        expenses: (expense, project) =>
-          this.buildExpensesResponse(expense, project, {
-            offset: 0,
-            total: totalExpenses,
-          }),
-      }),
+    const response: SingleProjectResponse = {
+      data: this.transformer.transform(project),
       meta: this.buildSingleResponseMeta(project),
     };
+
+    if (project.expenses) {
+      const pagination = {
+        offset: 0,
+        total: totalExpenses,
+      };
+      response.expenses = this.buildExpensesResponse(
+        project.expenses,
+        project,
+        pagination,
+      );
+    }
+
+    return response;
   }
 
   buildExpensesResponse(
@@ -57,6 +66,10 @@ export class ProjectResponseBuilder {
     pagination: Pagination,
   ): ListExpenseResponse {
     const parent = `${this.mainPath}/${project.uuid}`;
+    const projectExpensesTemplate = replaceInTemplate(
+      this.expensesListPathTemplate,
+      { p_uuid: project.uuid },
+    );
     return {
       data: expenseList.map((expense) => {
         return {
@@ -73,7 +86,14 @@ export class ProjectResponseBuilder {
         };
       }),
       meta: {
-        pagination: this.buildExpensesPagination(expenseList, pagination),
+        pagination:
+          expenseList?.length > 0
+            ? this.buildExpensesPagination(
+                expenseList,
+                pagination,
+                projectExpensesTemplate,
+              )
+            : undefined,
         links: {
           self: `${parent}/expenses`,
           parent: parent,
@@ -133,16 +153,17 @@ export class ProjectResponseBuilder {
   private buildExpensesPagination(
     expenses: EnrichedExpenseModel[],
     pagination: Pagination,
+    baseUrlTemplate: string,
   ) {
     const { total, offset } = pagination;
     return {
       totalItems: total,
       quantity: expenses.length,
-      previous: this.buildPreviousLink(this.expensesListPathTemplate, {
+      previous: this.buildPreviousLink(baseUrlTemplate, {
         offset,
         quantity: expenses.length,
       }),
-      next: this.buildNextLink(this.expensesListPathTemplate, {
+      next: this.buildNextLink(baseUrlTemplate, {
         offset,
         quantity: expenses.length,
         total,

@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidV4 } from 'uuid';
-import { UserService } from './user.service';
+
 import { UserRepository } from '../repositories/user.repository';
-import { BaseUser } from '../user.model';
 import { CreateUserDto } from '../user.dto';
+import { BaseUser } from '../user.model';
+import { UserService } from './user.service';
 
 @Injectable()
 export class UserImplService extends UserService {

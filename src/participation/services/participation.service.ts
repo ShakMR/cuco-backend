@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { ParticipationWithUserAndProject, UserParticipation } from '../participation.model';
+
 import { CreateParticipationDto } from '../participation.dto';
+import {
+  ParticipationWithUserAndProject,
+  UserParticipation,
+} from '../participation.model';
 
 @Injectable()
 export abstract class ParticipationService {

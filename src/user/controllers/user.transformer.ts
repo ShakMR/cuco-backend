@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { BaseUser } from '../user.model';
+
 import { UserDto } from '../user.dto';
+import { BaseUser } from '../user.model';
 
 @Injectable()
 export class UserTransformer {

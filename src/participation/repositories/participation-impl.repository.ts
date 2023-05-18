@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { ParticipationRepository } from './participation.repository';
+
 import { DbClient } from '../../db/db-client';
 import { Participation, ParticipationCreate } from '../../db/schemas';
 import { Participation as ParticipationModel } from '../participation.model';
+import { ParticipationRepository } from './participation.repository';
 
 @Injectable()
 export class ParticipationImplRepository extends ParticipationRepository {

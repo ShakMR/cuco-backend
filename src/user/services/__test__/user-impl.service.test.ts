@@ -1,7 +1,7 @@
+import { expectedUuidString } from '../../../common/utils/test.utils';
 import { userWithoutUuid } from '../../__mocks__/user';
 import MockRepository from '../../__mocks__/user.repository';
 import { UserImplService } from '../user-impl.service';
-import { expectedUuidString } from '../../../common/utils/test.utils';
 
 describe('UserServiceImpl', () => {
   let service;

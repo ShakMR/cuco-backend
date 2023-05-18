@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { UserRepository } from './user.repository';
+
 import { DbClient } from '../../db/db-client';
-import { User } from '../../db/schemas';
-import { BaseUser, UserType } from '../user.model';
-import { UserNotFoundException } from '../exceptions/user-not-found.exception';
 import EntityNotFoundException from '../../db/exception/entity-not-found.exception';
+import { User } from '../../db/schemas';
+import { UserNotFoundException } from '../exceptions/user-not-found.exception';
+import { BaseUser, UserType } from '../user.model';
+import { UserRepository } from './user.repository';
 
 @Injectable()
 export class UserImplRepository extends UserRepository {

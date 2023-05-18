@@ -1,4 +1,4 @@
-import { CreateExpenseModel, EnrichedExpenseModel } from './expense.model';
+import { CreateExpenseModel, EnrichedExpenseModel } from '../expense.model';
 
 type PaginationOptions = {
   howMany: number;

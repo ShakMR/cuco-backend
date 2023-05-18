@@ -7,7 +7,7 @@ import {
   createArrayOfMockedEnrichedExpenses,
   createMockEnrichedExpense,
 } from '../../../expenses/__mocks__/expense.model';
-import { ExpensesService } from '../../../expenses/expenses.service';
+import { ExpensesService } from '../../../expenses/service/expenses.service';
 import { LoggerService } from '../../../logger/logger.service';
 import {
   createArrayOfMockProject,

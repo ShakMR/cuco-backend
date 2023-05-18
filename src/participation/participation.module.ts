@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { DbModule } from '../db/db.module';
 import { ConfigModule } from '@nestjs/config';
-import { UserModule } from '../user/user.module';
-import { ProjectModule } from '../project/project.module';
-import { ParticipationResponseBuilder } from './controllers/participation-response.builder';
-import { ParticipationTransformer } from './controllers/participation.transformer';
-import { ParticipationService } from './services/participation.service';
-import { ParticipationImplService } from './services/participation-impl.service';
-import { ParticipationRepository } from './repositories/participation.repository';
-import { ParticipationImplRepository } from './repositories/participation-impl.repository';
-import { ParticipationController } from './controllers/participation.controller';
+
+import { DbModule } from '../db/db.module';
 import LoggerModule from '../logger/logger.module';
+import { ProjectModule } from '../project/project.module';
+import { UserModule } from '../user/user.module';
+import { ParticipationResponseBuilder } from './controllers/participation-response.builder';
+import { ParticipationController } from './controllers/participation.controller';
+import { ParticipationTransformer } from './controllers/participation.transformer';
+import { ParticipationImplRepository } from './repositories/participation-impl.repository';
+import { ParticipationRepository } from './repositories/participation.repository';
+import { ParticipationImplService } from './services/participation-impl.service';
+import { ParticipationService } from './services/participation.service';
 
 @Module({
   imports: [UserModule, ProjectModule, LoggerModule, DbModule, ConfigModule],

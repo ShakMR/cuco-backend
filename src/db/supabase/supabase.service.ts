@@ -1,12 +1,13 @@
-import { DbClient, Filter } from '../db-client';
-import { SupabaseClient } from '@supabase/supabase-js';
-import { PostgrestQueryBuilder } from '@supabase/postgrest-js';
-import { GenericSchema } from '@supabase/supabase-js/dist/main/lib/types';
 import { Injectable, Scope } from '@nestjs/common';
-import { DbConnector } from '../db-connector';
-import { Database } from './database.types';
+import { PostgrestQueryBuilder } from '@supabase/postgrest-js';
+import { SupabaseClient } from '@supabase/supabase-js';
+import { GenericSchema } from '@supabase/supabase-js/dist/main/lib/types';
+
 import { LoggerService } from '../../logger/logger.service';
+import { DbClient, Filter } from '../db-client';
+import { DbConnector } from '../db-connector';
 import EntityNotFoundException from '../exception/entity-not-found.exception';
+import { Database } from './database.types';
 
 function buildSelectExtra(selectExtra: string[]) {
   return ['*', ...selectExtra.map((extra) => `${extra}(*)`)].join(', ');

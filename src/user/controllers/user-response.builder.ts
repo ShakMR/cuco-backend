@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { BaseUser } from '../user.model';
+
 import { SingleUserResponse } from '../user.dto';
+import { BaseUser } from '../user.model';
 import { UserTransformer } from './user.transformer';
 
 @Injectable()

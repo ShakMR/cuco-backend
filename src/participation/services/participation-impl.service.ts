@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { ParticipationService } from './participation.service';
+
+import { ProjectService } from '../../project/service/project.service';
+import { UserService } from '../../user/services/user.service';
+import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
 import { CreateParticipationDto } from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
   UserParticipation,
 } from '../participation.model';
-import { UserService } from '../../user/services/user.service';
 import { ParticipationRepository } from '../repositories/participation.repository';
-import { ProjectService } from '../../project/service/project.service';
-import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
+import { ParticipationService } from './participation.service';
 
 @Injectable()
 export class ParticipationImplService extends ParticipationService {

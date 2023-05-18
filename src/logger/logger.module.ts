@@ -1,5 +1,6 @@
-import { LoggerService } from './logger.service';
 import { Module } from '@nestjs/common';
+
+import { LoggerService } from './logger.service';
 import { RequestLoggerMiddleware } from './request-logger.middleware';
 
 @Module({

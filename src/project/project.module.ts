@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ProjectController } from './controllers/project.controller';
-import { ProjectService } from './service/project.service';
-import { ProjectTransformer } from './controllers/project.transformer';
-import { ProjectRepository } from './repository/project.repository';
-import { ProjectImplRepository } from './repository/project-impl-repository';
+import { ConfigModule } from '@nestjs/config';
+
 import { DbModule } from '../db/db.module';
-import { ProjectImplService } from './service/project-impl.service';
 import { ExpensesModule } from '../expenses/expenses.module';
 import LoggerModule from '../logger/logger.module';
 import { ProjectExpensesController } from './controllers/project-expenses.controller';
 import { ProjectResponseBuilder } from './controllers/project-response.builder';
-import { ConfigModule } from '@nestjs/config';
+import { ProjectController } from './controllers/project.controller';
+import { ProjectTransformer } from './controllers/project.transformer';
+import { ProjectImplRepository } from './repository/project-impl.repository';
+import { ProjectRepository } from './repository/project.repository';
+import { ProjectImplService } from './service/project-impl.service';
+import { ProjectService } from './service/project.service';
 
 @Module({
   imports: [ConfigModule.forRoot(), DbModule, ExpensesModule, LoggerModule],

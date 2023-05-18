@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { CurrencyService } from './currency.service';
+
+import { DbModule } from '../db/db.module';
+import { CurrencyImplRepository } from './currency-impl.repository';
 import { CurrencyImplService } from './currency-impl.service';
 import { CurrencyRepository } from './currency.repository';
-import { CurrencyImplRepository } from './currency-impl.repository';
-import { DbModule } from '../db/db.module';
+import { CurrencyService } from './currency.service';
 
 @Module({
   imports: [DbModule],

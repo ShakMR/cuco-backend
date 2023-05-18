@@ -1,12 +1,12 @@
+import * as cors from 'cors';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
-import * as cors from 'cors';
 
-import { ProjectModule } from './project/project.module';
+import LoggerModule from './logger/logger.module';
 import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
 import { ParticipationModule } from './participation/participation.module';
-import LoggerModule from './logger/logger.module';
+import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
 
 @Module({

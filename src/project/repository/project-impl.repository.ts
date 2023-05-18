@@ -1,14 +1,16 @@
-import { ProjectRepository } from './project.repository';
+import { Injectable } from '@nestjs/common';
+
 import { DbClient } from '../../db/db-client';
 import { Project, ProjectCreate } from '../../db/schemas';
-import { Project as ProjectModel } from '../model/project.model';
-import { Injectable } from '@nestjs/common';
-import { ProjectNotFoundException } from '../exceptions/project-not-found.exception';
 import { SBNotFound } from '../../db/supabase/supabase.service';
+import { ProjectNotFoundException } from '../exceptions/project-not-found.exception';
+import { Project as ProjectModel } from '../model/project.model';
+import { ProjectRepository } from './project.repository';
+import EntityNotFoundException from '../../db/exception/entity-not-found.exception';
 
 @Injectable()
 export class ProjectImplRepository extends ProjectRepository {
-  constructor(private db: DbClient<Project, ProjectNotFoundException>) {
+  constructor(private db: DbClient<Project>) {
     super();
   }
 
@@ -34,7 +36,7 @@ export class ProjectImplRepository extends ProjectRepository {
     try {
       return ProjectImplRepository.map(await this.db.getBy({ uuid }));
     } catch (e) {
-      if (e instanceof SBNotFound) {
+      if (e instanceof EntityNotFoundException) {
         throw new ProjectNotFoundException({ uuid });
       }
     }

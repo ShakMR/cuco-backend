@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { PaymentTypeRepository } from './payment-type.repository';
+
+import { Currency } from '../currency/currency.model';
 import { DbClient } from '../db/db-client';
 import { PaymentType } from '../db/schemas';
+import { LoggerService } from '../logger/logger.service';
 import {
   PaymentType as PaymentTypeModel,
   PaymentTypeName,
 } from './payment-type.model';
-import { Currency } from '../currency/currency.model';
-import { LoggerService } from '../logger/logger.service';
+import { PaymentTypeRepository } from './payment-type.repository';
 
 @Injectable()
 export class PaymentTypeImplRepository extends PaymentTypeRepository {

@@ -1,8 +1,9 @@
-import { ExpensesRepository } from './expenses.repository';
 import { Injectable } from '@nestjs/common';
-import { DbClient } from '../db/db-client';
-import { ExpenseCreate, Expenses, ExpensesTable } from '../db/schemas';
-import { ExpenseModel } from './expense.model';
+
+import { DbClient } from '../../db/db-client';
+import { ExpenseCreate, Expenses, ExpensesTable } from '../../db/schemas';
+import { ExpenseModel } from '../expense.model';
+import { ExpensesRepository } from './expenses.repository';
 
 @Injectable()
 export class ExpensesImplRepository extends ExpensesRepository {
@@ -21,7 +22,7 @@ export class ExpensesImplRepository extends ExpensesRepository {
       amount: expense.amount,
       concept: expense.concept,
       date: new Date(expense.date),
-      createdAt: expense.created_at,
+      createdAt: new Date(expense.created_at),
       payer: { id: expense.payer_id },
       currency: { id: expense.currency },
       paymentType: { id: expense.payment_type },

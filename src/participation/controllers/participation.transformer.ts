@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
+
+import { SingleProjectResponse } from '../../project/dto/project.dto';
+import { Project } from '../../project/model/project.model';
+import { SingleUserResponse } from '../../user/user.dto';
+import { BaseUser } from '../../user/user.model';
 import { ParticipationDto } from '../participation.dto';
 import { ParticipationWithUserAndProject } from '../participation.model';
-import { BaseUser } from '../../user/user.model';
-import { SingleUserResponse } from '../../user/user.dto';
-import { Project } from '../../project/model/project.model';
-import { SingleProjectResponse } from '../../project/dto/project.dto';
 
 type DependencyTransformer = {
   user: (user: BaseUser) => SingleUserResponse;

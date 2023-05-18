@@ -1,18 +1,19 @@
-import { ExpensesService } from './expenses.service';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { ExpensesRepository } from './expenses.repository';
+
+import { Currency } from '../../currency/currency.model';
+import { CurrencyService } from '../../currency/currency.service';
+import { PaymentType } from '../../payment-type/payment-type.model';
+import { PaymentTypeService } from '../../payment-type/payment-type.service';
+import { UserService } from '../../user/services/user.service';
+import { BaseUser } from '../../user/user.model';
 import {
   CreateExpenseModel,
   EnrichedExpenseModel,
   ExpenseModel,
-} from './expense.model';
-import { CurrencyService } from '../currency/currency.service';
-import { PaymentTypeService } from '../payment-type/payment-type.service';
-import { UserService } from '../user/services/user.service';
-import { BaseUser } from '../user/user.model';
-import { Currency } from '../currency/currency.model';
-import { PaymentType } from '../payment-type/payment-type.model';
+} from '../expense.model';
+import { ExpensesRepository } from '../repository/expenses.repository';
+import { ExpensesService } from './expenses.service';
 
 type Relations = {
   payer: BaseUser;

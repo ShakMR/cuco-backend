@@ -1,15 +1,16 @@
-import { ProjectService, ProjectServiceOptions } from './project.service';
-import { Project } from '../model/project.model';
 import { Injectable } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
-import { ProjectRepository } from '../repository/project.repository';
-import { ExpensesService } from '../../expenses/expenses.service';
+
 import {
   CreateExpenseModel,
   EnrichedExpenseModel,
 } from '../../expenses/expense.model';
+import { ExpensesService } from '../../expenses/service/expenses.service';
 import { LoggerService } from '../../logger/logger.service';
 import { CreateProjectDto } from '../dto/project.dto';
+import { Project } from '../model/project.model';
+import { ProjectRepository } from '../repository/project.repository';
+import { ProjectService, ProjectServiceOptions } from './project.service';
 
 @Injectable()
 export class ProjectImplService extends ProjectService {
@@ -64,7 +65,7 @@ export class ProjectImplService extends ProjectService {
       this.logger.error(
         `Expense with uuid ${uuid} does not belong to project with uuid ${projectUuid}`,
       );
-      throw new Error("TODO: add proper error handling");
+      throw new Error('TODO: add proper error handling');
     }
 
     return expense;

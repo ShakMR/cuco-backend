@@ -1,20 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import {
-  ParticipationWithUserAndProject,
-  UserParticipation,
-} from '../participation.model';
-import { ParticipationTransformer } from './participation.transformer';
+
+import { ResponseDto } from '../../common/dto/response.dto';
+import { AppError } from '../../common/exceptions/AppError';
+import { replaceInTemplate } from '../../common/utils/replaceInTemplate';
+import { ProjectResponseBuilder } from '../../project/controllers/project-response.builder';
+import { UserResponseBuilder } from '../../user/controllers/user-response.builder';
 import {
   ParticipationInProject,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
-import { replaceInTemplate } from '../../common/utils/replaceInTemplate';
-import { UserResponseBuilder } from '../../user/controllers/user-response.builder';
-import { ProjectResponseBuilder } from '../../project/controllers/project-response.builder';
-import { AppError } from '../../common/exceptions/AppError';
-import { ResponseDto } from '../../common/dto/response.dto';
+import {
+  ParticipationWithUserAndProject,
+  UserParticipation,
+} from '../participation.model';
+import { ParticipationTransformer } from './participation.transformer';
 
 @Injectable()
 export class ParticipationResponseBuilder {

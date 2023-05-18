@@ -6,15 +6,16 @@ import {
   Param,
   Post,
 } from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+
 import {
   CreateExpenseDto,
   ExpenseResponse,
   ListExpenseResponse,
-} from '../../expenses/expense.dto';
+} from '../../expenses/dto/expense.dto';
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { LoggerService } from '../../logger/logger.service';
 import { ProjectService } from '../service/project.service';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('projects', 'expenses')
 @Controller('/projects/:p_uuid/expenses')

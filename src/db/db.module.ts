@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+
+import LoggerModule from '../logger/logger.module';
+import { DbClient } from './db-client';
 import { DbConnector } from './db-connector';
 import { SupabaseSingletonConnectorService } from './supabase/supabase-connector.service';
-import { DbClient } from './db-client';
 import { SupabaseService } from './supabase/supabase.service';
-import LoggerModule from '../logger/logger.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), LoggerModule],

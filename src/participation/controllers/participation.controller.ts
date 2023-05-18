@@ -8,15 +8,16 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { ParticipationResponseBuilder } from './participation-response.builder';
+
+import { NotFoundException as EntityNotFound } from '../../common/exceptions/NotFoundException';
+import { LoggerService } from '../../logger/logger.service';
 import {
   CreateParticipationDto,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
 import { ParticipationService } from '../services/participation.service';
-import { LoggerService } from '../../logger/logger.service';
-import { NotFoundException as EntityNotFound } from '../../common/exceptions/NotFoundException';
+import { ParticipationResponseBuilder } from './participation-response.builder';
 
 @ApiTags('participations')
 @Controller('participations')

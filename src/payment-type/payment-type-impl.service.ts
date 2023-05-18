@@ -1,7 +1,8 @@
-import { PaymentTypeService } from './payment-type.service';
 import { Injectable } from '@nestjs/common';
+
 import { PaymentType } from './payment-type.model';
 import { PaymentTypeRepository } from './payment-type.repository';
+import { PaymentTypeService } from './payment-type.service';
 
 @Injectable()
 export class PaymentTypeImplService extends PaymentTypeService {

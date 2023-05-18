@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
-import { UserService } from './services/user.service';
-import { UserImplService } from './services/user-impl.service';
-import { UserRepository } from './repositories/user.repository';
-import { UserImplRepository } from './repositories/user-impl-repository.service';
+import { ConfigModule } from '@nestjs/config';
+
 import { DbModule } from '../db/db.module';
+import { UserResponseBuilder } from './controllers/user-response.builder';
 import { UserController } from './controllers/user.controller';
 import { UserTransformer } from './controllers/user.transformer';
-import { UserResponseBuilder } from './controllers/user-response.builder';
-import { ConfigModule } from '@nestjs/config';
+import { UserImplRepository } from './repositories/user-impl-repository';
+import { UserRepository } from './repositories/user.repository';
+import { UserImplService } from './services/user-impl.service';
+import { UserService } from './services/user.service';
 
 @Module({
   imports: [DbModule, ConfigModule],
