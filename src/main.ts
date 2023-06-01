@@ -8,7 +8,7 @@ async function bootstrap() {
     bufferLogs: true,
   });
   app.setGlobalPrefix(AppModule.apiPrefix);
-
+  app.useGlobalFilters(AppModule.exceptionFilter);
   const config = new DocumentBuilder()
     .setTitle('Cuco API')
     .setDescription('API serving accounting items')

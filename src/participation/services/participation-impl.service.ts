@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { UserNotFoundException } from 'src/user/exceptions/user-not-found.exception';
 
 import { ProjectService } from '../../project/service/project.service';
 import { UserService } from '../../user/services/user.service';
@@ -73,6 +74,10 @@ export class ParticipationImplService extends ParticipationService {
 
   async getParticipationForUser(uuid: string): Promise<UserParticipation> {
     const user = await this.userService.getByUuid(uuid);
+
+    if (!user) {
+      throw new UserNotFoundException({ uuid });
+    }
 
     const participation = await this.repository.findByUser(user.id);
 

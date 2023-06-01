@@ -3,11 +3,15 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 
+
+
+import { EntityNotFoundExceptionFilter } from './EntityNotFoundException.filter';
 import LoggerModule from './logger/logger.module';
 import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
 import { ParticipationModule } from './participation/participation.module';
 import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
+
 
 @Module({
   imports: [
@@ -17,14 +21,20 @@ import { UserModule } from './user/user.module';
     ParticipationModule,
     UserModule,
   ],
+  providers: [EntityNotFoundExceptionFilter],
 })
 export class AppModule implements NestModule {
   static port: string;
   static apiPrefix: string;
+  static exceptionFilter: EntityNotFoundExceptionFilter;
 
-  constructor(configService: ConfigService) {
+  constructor(
+    configService: ConfigService,
+    filter: EntityNotFoundExceptionFilter,
+  ) {
     AppModule.port = configService.get('PORT');
     AppModule.apiPrefix = configService.get('API_PREFIX');
+    AppModule.exceptionFilter = filter;
   }
 
   configure(consumer: MiddlewareConsumer): any {
