@@ -1,3 +1,4 @@
+import { fixDay } from '../../common/__mocks__/date';
 import entityFactory from '../../common/__mocks__/entity.factory';
 import { Project } from '../../db/schemas';
 import { Project as ProjectModel } from '../model/project.model';
@@ -6,7 +7,7 @@ const mockProject: ProjectModel = {
   id: 1234,
   isOpen: true,
   name: 'Project Name',
-  createdAt: new Date('2020-01-01T00:00:00.000Z'),
+  createdAt: fixDay,
   uuid: 'uuid',
   expenses: [],
   shortName: 'project-name',
