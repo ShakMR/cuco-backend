@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserNotFoundException } from 'src/user/exceptions/user-not-found.exception';
 
 import { ProjectService } from '../../project/service/project.service';
+import { UserNotFoundException } from '../../user/exceptions/user-not-found.exception';
 import { UserService } from '../../user/services/user.service';
 import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
 import { CreateParticipationDto } from '../participation.dto';
