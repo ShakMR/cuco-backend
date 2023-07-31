@@ -79,7 +79,7 @@ export class ProjectController {
   async get(
     @Param('uuid') uuid: string,
     @Query('includeExpenses') includeExpenses: boolean,
-    @Query('includeCalculation') includeCalculations: boolean,
+    // @Query('includeCalculation') includeCalculations: boolean,
   ) {
     const project = await this.service.getByUuid(uuid, { includeExpenses });
 

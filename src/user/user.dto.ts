@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty } from 'class-validator';
+import { IsEmail } from 'class-validator';
 
 import { ResponseDto } from '../common/dto/response.dto';
 import { UserType } from './user.model';
