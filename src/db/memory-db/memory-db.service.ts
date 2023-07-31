@@ -9,12 +9,15 @@ export class MemoryNotFound extends EntityNotFoundException {}
   scope: Scope.TRANSIENT,
 })
 export class MemoryDBService<Schema> extends DbClient<Schema, number> {
-  private readonly data: Schema[] = [];
+  private data: Schema[] = [];
   private tableName: string;
 
-  constructor(initialData: Schema[] = []) {
+  constructor() {
     super();
-    this.data = initialData;
+  }
+
+  initData(data: Schema[]) {
+    this.data = data;
   }
 
   getTableName() {

@@ -60,7 +60,6 @@ export class ProjectController {
     @Query('shortName') shortName: string,
     @Query('includeExpenses') includeExpenses: boolean,
   ): Promise<ProjectsResponse> {
-    console.log(shortName);
     const projects = await this.service.searchByShortName(shortName, {
       includeExpenses,
     });

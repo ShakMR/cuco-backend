@@ -1,4 +1,5 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 import { ResponseDto } from '../common/dto/response.dto';
 import { UserType } from './user.model';
@@ -15,9 +16,10 @@ export class UserDto {
 }
 
 export class CreateUserDto {
-  @ApiProperty()
+  @ApiProperty({ required: true })
   name: string;
-  @ApiProperty()
+  @ApiProperty({ required: true })
+  @IsEmail()
   email: string;
   @ApiProperty({
     enum: UserType,

@@ -23,7 +23,8 @@ describe('MemoryDBService', () => {
   };
 
   beforeEach(() => {
-    memoryDB = new MemoryDBService<Schema>([record1, record2]);
+    memoryDB = new MemoryDBService<Schema>();
+    memoryDB.initData([record1, record2]);
   });
 
   describe('find', () => {

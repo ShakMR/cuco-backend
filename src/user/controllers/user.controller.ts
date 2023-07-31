@@ -1,5 +1,14 @@
-import { Body, Controller, Get, Injectable, Param, Post } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Injectable,
+  Param,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 import { UserService } from '../services/user.service';
 import { CreateUserDto, SingleUserResponse } from '../user.dto';
@@ -17,6 +26,7 @@ export class UserController {
   @ApiBody({
     type: CreateUserDto,
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async createUser(
     @Body() userDto: CreateUserDto,
   ): Promise<SingleUserResponse> {
@@ -30,7 +40,7 @@ export class UserController {
     description: 'User Data',
     type: SingleUserResponse,
   })
-  @ApiOkResponse({ status: 404, description: 'User not found' })
+  @ApiResponse({ status: 404, description: 'User not found' })
   async getUser(@Param('uuid') uuid: string): Promise<SingleUserResponse> {
     const user = await this.service.getByUuid(uuid);
 

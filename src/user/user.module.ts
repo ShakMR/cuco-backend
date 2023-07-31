@@ -9,11 +9,14 @@ import { UserImplRepository } from './repositories/user-impl-repository';
 import { UserRepository } from './repositories/user.repository';
 import { UserImplService } from './services/user-impl.service';
 import { UserService } from './services/user.service';
+import { EntityNotFoundExceptionFilter } from '../EntityNotFoundException.filter';
+import LoggerModule from '../logger/logger.module';
 
 @Module({
-  imports: [DbModule, ConfigModule],
+  imports: [DbModule, ConfigModule, LoggerModule],
   controllers: [UserController],
   providers: [
+    EntityNotFoundExceptionFilter,
     {
       provide: UserService,
       useClass: UserImplService,

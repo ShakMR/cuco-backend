@@ -9,6 +9,7 @@ import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
 import { ParticipationModule } from './participation/participation.module';
 import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
+import { APP_FILTER } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,20 +19,16 @@ import { UserModule } from './user/user.module';
     ParticipationModule,
     UserModule,
   ],
-  providers: [EntityNotFoundExceptionFilter],
+  providers: [{ provide: APP_FILTER, useClass: EntityNotFoundExceptionFilter }],
 })
 export class AppModule implements NestModule {
   static port: string;
   static apiPrefix: string;
   static exceptionFilter: EntityNotFoundExceptionFilter;
 
-  constructor(
-    configService: ConfigService,
-    filter: EntityNotFoundExceptionFilter,
-  ) {
+  constructor(configService: ConfigService) {
     AppModule.port = configService.get('PORT');
     AppModule.apiPrefix = configService.get('API_PREFIX');
-    AppModule.exceptionFilter = filter;
   }
 
   configure(consumer: MiddlewareConsumer): any {
