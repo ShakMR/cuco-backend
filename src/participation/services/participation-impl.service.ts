@@ -90,8 +90,9 @@ export class ParticipationImplService extends ParticipationService {
 
     return {
       user,
-      participation: participation.map(({ share }, index) => ({
+      participation: participation.map(({ share, joinedOn }, index) => ({
         share,
+        joinedOn,
         project: projects[index],
       })),
     };

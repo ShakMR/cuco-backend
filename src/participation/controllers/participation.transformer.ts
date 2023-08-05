@@ -15,14 +15,14 @@ type DependencyTransformer = {
 @Injectable()
 export class ParticipationTransformer {
   transform(
-    { id, createdAt, user, project, ...rest }: ParticipationWithUserAndProject,
+    { id, joinedOn, user, project, ...rest }: ParticipationWithUserAndProject,
     depTransformer: DependencyTransformer,
   ): ParticipationDto {
     return {
       ...rest,
       user: depTransformer.user(user),
       project: depTransformer.project(project),
-      joinedOn: new Date(createdAt),
+      joinedOn: new Date(joinedOn),
     };
   }
 }

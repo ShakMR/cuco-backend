@@ -101,10 +101,11 @@ export class ParticipationResponseBuilder {
     user,
     participation,
   }: UserParticipation): ResponseDto<ParticipationInProject>[] {
-    return participation.map(({ project, share }) => ({
+    return participation.map(({ project, share, joinedOn }) => ({
       data: {
         project: this.projectResponseBuilder.buildSingleResponse(project),
         share,
+        joinedOn,
       },
       meta: {
         links: {

@@ -107,7 +107,7 @@ describe('ParticipationImplService', () => {
       expect(participation).toEqual({
         id: 1234,
         share: 50,
-        createdAt: expect.any(Date),
+        joinedOn: new Date('2020-01-01'),
         user: mockUser,
         project: mockProject,
       });

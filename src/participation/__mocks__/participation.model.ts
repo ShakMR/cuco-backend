@@ -1,8 +1,6 @@
 import { fixDay } from '../../common/__mocks__/date';
 import { getFactories } from '../../common/__mocks__/entity.factory';
 import { Participation as ParticipationSchema } from '../../db/schemas';
-import { createMockProject } from '../../project/__mocks__/project.model';
-import { createMockUser } from '../../user/__mocks__/user';
 import { Participation } from '../participation.model';
 
 const mockParticipation: Participation = {
@@ -10,7 +8,7 @@ const mockParticipation: Participation = {
   user: { id: 1 },
   project: { id: 1 },
   share: 50,
-  createdAt: fixDay,
+  joinedOn: fixDay,
 };
 
 export default mockParticipation;

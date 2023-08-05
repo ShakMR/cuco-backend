@@ -5,6 +5,7 @@ type Schema = {
   uuid: string;
   name: string;
   type: string;
+  created_at: Date;
 };
 
 describe('MemoryDBService', () => {
@@ -14,12 +15,14 @@ describe('MemoryDBService', () => {
     uuid: 'uuid',
     name: 'name',
     type: 'common',
+    created_at: new Date(),
   };
   const record2: Schema = {
     id: 2,
     uuid: 'uuid2',
     name: 'name2',
     type: 'common',
+    created_at: new Date(),
   };
 
   beforeEach(() => {
@@ -128,6 +131,7 @@ describe('MemoryDBService', () => {
         uuid: 'uuid-3',
         name: 'newRecord',
         type: 'common',
+        created_at: new Date(),
       };
 
       const record = await memoryDB.save(newRecord);

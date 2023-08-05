@@ -4,8 +4,6 @@ import { Test } from '@nestjs/testing';
 
 import { DbClient } from '../../../db/db-client';
 import { Participation } from '../../../db/schemas';
-import { createMockDBProject } from '../../../project/__mocks__/project.model';
-import { createMockUser } from '../../../user/__mocks__/user';
 import {
   createArrayOfMockDBParticipation,
   createMockDBParticipation,

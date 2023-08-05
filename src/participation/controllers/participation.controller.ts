@@ -6,6 +6,8 @@ import {
   Param,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
@@ -19,8 +21,8 @@ import {
 import { ParticipationService } from '../services/participation.service';
 import { ParticipationResponseBuilder } from './participation-response.builder';
 
-@ApiTags('participations')
-@Controller('participations')
+@ApiTags('participation')
+@Controller('participation')
 export class ParticipationController {
   constructor(
     private logger: LoggerService,
@@ -35,6 +37,7 @@ export class ParticipationController {
   @ApiBody({
     type: CreateParticipationDto,
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async createParticipation(@Body() body: CreateParticipationDto) {
     try {
       const participation = await this.service.create(body);
@@ -45,7 +48,7 @@ export class ParticipationController {
         throw new NotFoundException(this.responseBuilder.buildError(e));
       }
 
-      throw new Error(e);
+      throw e;
     }
   }
 

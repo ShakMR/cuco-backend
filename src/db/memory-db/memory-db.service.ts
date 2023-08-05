@@ -79,8 +79,14 @@ export class MemoryDBService<Schema> extends DbClient<Schema, number> {
 
     const newElement = { id: index + 1, ...newData } as Schema;
 
-    this.data.push(newElement);
+    this.data.push({
+      ...newElement,
+      created_at: new Date(),
+    });
 
-    return newElement;
+    return {
+      ...newElement,
+      created_at: new Date(),
+    };
   }
 }

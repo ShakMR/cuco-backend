@@ -6,7 +6,7 @@ export type Participation = {
   user: Pick<BaseUser, 'id'>;
   project: Pick<Project, 'id'>;
   share: number;
-  createdAt: Date;
+  joinedOn: Date;
 };
 
 export type ParticipationWithUserAndProject = Participation & {
@@ -19,5 +19,6 @@ export type UserParticipation = {
   participation: {
     project: Project;
     share: number;
+    joinedOn: Date;
   }[];
 };

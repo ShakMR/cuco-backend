@@ -18,7 +18,7 @@ export class ParticipationImplRepository extends ParticipationRepository {
   static map(participation: Participation) {
     return {
       id: participation.id,
-      createdAt: new Date(participation.created_at),
+      joinedOn: new Date(participation.created_at),
       share: participation.share,
       user: {
         id: participation.user_id,
