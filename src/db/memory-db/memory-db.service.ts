@@ -2,6 +2,7 @@ import { Injectable, Scope } from '@nestjs/common';
 
 import { DbClient, Filter } from '../db-client';
 import EntityNotFoundException from '../exception/entity-not-found.exception';
+import { MemoryDbRepository } from './memory-db.repository';
 
 export class MemoryNotFound extends EntityNotFoundException {}
 
@@ -9,11 +10,18 @@ export class MemoryNotFound extends EntityNotFoundException {}
   scope: Scope.TRANSIENT,
 })
 export class MemoryDBService<Schema> extends DbClient<Schema, number> {
-  private data: Schema[] = [];
   private tableName: string;
 
-  constructor() {
+  constructor(private repository: MemoryDbRepository) {
     super();
+  }
+
+  get data(): Schema[] {
+    return this.repository.getData(this.tableName);
+  }
+
+  set data(data: Schema[]) {
+    this.repository.setData(this.tableName, data);
   }
 
   initData(data: Schema[]) {
@@ -74,15 +82,20 @@ export class MemoryDBService<Schema> extends DbClient<Schema, number> {
     this.tableName = tableName;
   }
 
-  async save(newData: Partial<Schema>): Promise<Schema> {
+  async save(newData: Partial<Schema>, persist = false): Promise<Schema> {
     const index = this.data.length;
 
-    const newElement = { id: index + 1, ...newData } as Schema;
+    const newElement = { ...newData, id: index + 1 } as Schema;
 
-    this.data.push({
-      ...newElement,
-      created_at: new Date(),
-    });
+    if (persist) {
+      this.data = [
+        ...this.data,
+        {
+          ...newElement,
+          created_at: new Date(),
+        },
+      ];
+    }
 
     return {
       ...newElement,

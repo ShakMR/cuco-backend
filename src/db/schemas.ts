@@ -1,13 +1,18 @@
 import { Database } from './supabase/database.types';
 
 type PublicTables = Database['public']['Tables'];
+export const ExpensesTable = 'Spending';
+export const ProjectsTable = 'Project';
+export const UserTable = 'User';
+export const PaymentTypeTable = 'PaymentType';
+export const CurrencyTable = 'Currency';
+export const ParticipantTable = 'Participation';
 
 export type Project = PublicTables['Project']['Row'];
 export type ProjectCreate = PublicTables['Project']['Insert'];
 export type Statistics = PublicTables['Statics']['Row'];
 export type Passport = PublicTables['Passport']['Row'];
 
-export const ExpensesTable = 'Spending';
 export type Expenses = PublicTables['Spending']['Row'];
 export type ExpenseCreate = PublicTables['Spending']['Insert'];
 

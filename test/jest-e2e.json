@@ -18,5 +18,9 @@
   "testEnvironment": "node",
   "coveragePathIgnorePatterns": [
     ".test.ts"
+  ],
+  "setupFilesAfterEnv": [
+    "./__test__/e2e-setup.ts",
+    "./__test__/e2e-teardown.ts"
   ]
 }

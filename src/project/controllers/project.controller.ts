@@ -7,6 +7,8 @@ import {
   Param,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -79,7 +81,7 @@ export class ProjectController {
   async get(
     @Param('uuid') uuid: string,
     @Query('includeExpenses') includeExpenses: boolean,
-    // @Query('includeCalculation') includeCalculations: boolean,
+    // @Query('includeExpenseSummary') includeExpenseSummary: boolean,
   ) {
     const project = await this.service.getByUuid(uuid, { includeExpenses });
 
@@ -127,6 +129,7 @@ export class ProjectController {
     status: HttpStatus.CONFLICT,
     description: 'A project with that name already exists',
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async createProject(
     @Body() projectData: CreateProjectDto,
   ): Promise<CreateProjectResponse> {

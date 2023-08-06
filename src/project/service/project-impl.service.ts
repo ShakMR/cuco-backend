@@ -11,6 +11,7 @@ import { CreateProjectDto } from '../dto/project.dto';
 import { Project } from '../model/project.model';
 import { ProjectRepository } from '../repository/project.repository';
 import { ProjectService, ProjectServiceOptions } from './project.service';
+import { ProjectNameAlreadyExistsException } from '../exceptions/project-name-already-exists.exception';
 
 @Injectable()
 export class ProjectImplService extends ProjectService {
@@ -71,8 +72,16 @@ export class ProjectImplService extends ProjectService {
     return expense;
   }
 
-  create(data: CreateProjectDto): Promise<Project> {
+  async create(data: CreateProjectDto): Promise<Project> {
     const uuid = uuidv4();
+    const existingProjectByName = await this.repository.search({
+      name: data.name,
+    });
+
+    if (existingProjectByName.length > 0) {
+      throw new ProjectNameAlreadyExistsException(data.name);
+    }
+
     const newProject = this.repository.save({
       name: data.name,
       uuid,

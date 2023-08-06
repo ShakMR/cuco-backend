@@ -6,8 +6,7 @@
   ],
   "rootDir": "../src",
   "testRegex": [
-    ".*\\.test\\.ts$",
-    ".*\\.e2e-spec\\.ts$"
+    ".*\\.test\\.ts$"
   ],
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
@@ -19,5 +18,13 @@
   "testEnvironment": "node",
   "setupFilesAfterEnv": [
     "./__test__/jestGlobalSetup.ts"
+  ],
+  "coveragePathIgnorePatterns": [
+    "e2e",
+    "controller",
+    "module.ts",
+    "dto",
+    "main.ts",
+    ".filter.ts"
   ]
 }

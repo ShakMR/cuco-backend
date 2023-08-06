@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 
 import { DbClient } from '../../db/db-client';
 import { Project, ProjectCreate } from '../../db/schemas';
-import { SBNotFound } from '../../db/supabase/supabase.service';
 import { ProjectNotFoundException } from '../exceptions/project-not-found.exception';
 import { Project as ProjectModel } from '../model/project.model';
 import { ProjectRepository } from './project.repository';
@@ -52,8 +51,15 @@ export class ProjectImplRepository extends ProjectRepository {
     return projects.map(ProjectImplRepository.map);
   }
 
-  async search(param: { shortName: string }) {
-    const projects = await this.db.findAll({ short_name: param.shortName });
+  async search(param: { shortName?: string; name?: string }) {
+    const filters: { short_name?: string; name?: string } = {};
+    if (param.shortName) {
+      filters.short_name = param.shortName;
+    }
+    if (param.name) {
+      filters.name = param.name;
+    }
+    const projects = await this.db.findAll(filters);
 
     return projects.map(ProjectImplRepository.map);
   }

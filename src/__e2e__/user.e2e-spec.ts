@@ -38,26 +38,16 @@ describe('UserController (e2e)', () => {
   });
 
   it('GET - /users/:uuid - 200', async () => {
-    const userData = {
-      name: 'test',
-      email: 'email@test.com',
-      type: 'user',
-      externalId: 'externalId',
-    };
-    const postResponse = await request(app.getHttpServer())
-      .post('/users/')
-      .send(userData);
-
-    const uuid = postResponse.body.data.uuid;
-
-    const res = await request(app.getHttpServer()).get(`/users/${uuid}`).send();
+    const res = await request(app.getHttpServer()).get(`/users/mock`).send();
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({
-      data: {
-        ...userData,
+      data: expect.objectContaining({
+        name: 'test',
+        type: 'user',
+        email: 'example@example.com',
         uuid: expect.any(String),
-      },
+      }),
       meta: expect.any(Object),
     });
   });

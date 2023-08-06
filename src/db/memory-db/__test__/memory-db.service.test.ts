@@ -1,4 +1,5 @@
 import { MemoryDBService, MemoryNotFound } from '../memory-db.service';
+import { MemoryDbRepository } from '../memory-db.repository';
 
 type Schema = {
   id: number;
@@ -26,7 +27,8 @@ describe('MemoryDBService', () => {
   };
 
   beforeEach(() => {
-    memoryDB = new MemoryDBService<Schema>();
+    memoryDB = new MemoryDBService<Schema>(new MemoryDbRepository());
+    memoryDB.init('testTable');
     memoryDB.initData([record1, record2]);
   });
 
@@ -102,7 +104,7 @@ describe('MemoryDBService', () => {
 
     it('should return single entry matching filter', async () => {
       const record = await memoryDB.getBy({ uuid: 'uuid' });
-      expect(record).toBe(record1);
+      expect(record).toEqual(record1);
     });
   });
 
@@ -114,7 +116,7 @@ describe('MemoryDBService', () => {
     it('should return single entry matching id', async () => {
       const record = await memoryDB.getById(1);
 
-      expect(record).toBe(record1);
+      expect(record).toEqual(record1);
     });
   });
 
@@ -134,7 +136,7 @@ describe('MemoryDBService', () => {
         created_at: new Date(),
       };
 
-      const record = await memoryDB.save(newRecord);
+      const record = await memoryDB.save(newRecord, true);
 
       expect(record).toEqual({ id: 3, ...newRecord });
 

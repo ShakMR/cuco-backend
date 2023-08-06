@@ -1,19 +1,24 @@
-import { ArgumentsHost, Catch, ExceptionFilter } from '@nestjs/common';
+import {
+  ArgumentsHost,
+  Catch,
+  ExceptionFilter,
+  HttpStatus,
+} from '@nestjs/common';
 import { Response } from 'express';
 
 import { LoggerService } from './logger/logger.service';
-import { NotFoundException } from './common/exceptions/NotFoundException';
+import { AppError } from './common/exceptions/AppError';
 
-@Catch(NotFoundException)
-export class EntityNotFoundExceptionFilter implements ExceptionFilter {
+@Catch(AppError)
+export class EntityNotFoundFilter implements ExceptionFilter {
   // TODO: make this work only on entity not found
   constructor(private logger: LoggerService) {}
 
-  catch(exception: NotFoundException<any>, host: ArgumentsHost) {
+  catch(exception: AppError, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
-    const status = 404;
+    const status = exception.statusCode;
 
     this.logger.error({
       statusCode: status,

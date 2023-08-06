@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { ResponseDto } from '../../common/dto/response.dto';
 import { ListExpenseResponse } from '../../expenses/dto/expense.dto';
+import { IsNotEmpty } from 'class-validator';
 
 export class ProjectDto {
   @ApiProperty()
@@ -18,6 +19,7 @@ export class ProjectDto {
 
 export class CreateProjectDto {
   @ApiProperty()
+  @IsNotEmpty()
   name: string;
 }
 

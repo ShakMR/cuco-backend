@@ -1,7 +1,6 @@
 import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { initApp } from './e2e-utils';
-import { UserType } from '../user/user.model';
 
 describe('ParticipationController (e2e)', () => {
   let app: INestApplication;
@@ -9,45 +8,30 @@ describe('ParticipationController (e2e)', () => {
   let projectUuid: string;
 
   beforeAll(async () => {
-    jest.useFakeTimers();
     const config = await initApp();
     app = config.app;
-
-    const newUserResponse = await request(app.getHttpServer())
-      .post('/users')
-      .send({
-        name: 'test user',
-        email: 'test@example.com',
-        type: UserType.user,
-      });
-    userUuid = newUserResponse.body.data.uuid;
-
-    const newProjectResponse = await request(app.getHttpServer())
-      .post('/projects')
-      .send({ name: 'test-project' });
-    projectUuid = newProjectResponse.body.data.uuid;
   });
 
   it('POST /participation/ - 200', async () => {
     const participationResponse = await request(app.getHttpServer())
       .post('/participation')
-      .send({ userUuid, projectUuid });
+      .send({ userUuid: 'mock', projectUuid: 'mock' });
 
     expect(participationResponse.statusCode).toBe(201);
     expect(participationResponse.body).toEqual({
       data: {
         user: {
           data: expect.objectContaining({
-            name: 'test user',
-            email: 'test@example.com',
-            uuid: userUuid,
+            name: 'test',
+            email: 'example@example.com',
+            uuid: 'mock',
           }),
           meta: expect.any(Object),
         },
         project: {
           data: expect.objectContaining({
-            name: 'test-project',
-            uuid: projectUuid,
+            name: 'test-project-1',
+            uuid: 'mock',
           }),
           expenses: {
             data: [],
@@ -65,7 +49,7 @@ describe('ParticipationController (e2e)', () => {
   it("POST /participation/ - 404 if user or project don't exist", async () => {
     const participationResponse = await request(app.getHttpServer())
       .post('/participation')
-      .send({ userUuid: 'whateverID', projectUuid });
+      .send({ userUuid: 'whateverID', projectUuid: 'mock' });
 
     expect(participationResponse.statusCode).toBe(404);
     expect(participationResponse.body).toEqual({
@@ -81,7 +65,7 @@ describe('ParticipationController (e2e)', () => {
 
     const response404Project = await request(app.getHttpServer())
       .post('/participation')
-      .send({ userUuid, projectUuid: 'whateverID' });
+      .send({ userUuid: 'mock', projectUuid: 'whateverID' });
 
     expect(response404Project.statusCode).toBe(404);
     expect(response404Project.body).toEqual({
@@ -99,10 +83,10 @@ describe('ParticipationController (e2e)', () => {
   it('GET - /participation - 200', async () => {
     const participationResponse = await request(app.getHttpServer())
       .get('/participation')
-      .query({ user: userUuid, project: projectUuid })
+      .query({ user: 'mock', project: 'mock' })
       .send();
 
-    expect(participationResponse.statusCode).toBe(200);
+    expect(participationResponse.statusCode).toBe(HttpStatus.OK);
   });
 
   it('GET - /participation - 404 if either user or project does not exist', async () => {
@@ -149,17 +133,17 @@ describe('ParticipationController (e2e)', () => {
 
   it('GET - /participation/user/:uuid', async () => {
     const participationResponse = await request(app.getHttpServer())
-      .get(`/participation/user/${userUuid}`)
+      .get(`/participation/user/mock`)
       .send();
 
-    expect(participationResponse.statusCode).toBe(200);
+    expect(participationResponse.statusCode).toBe(HttpStatus.OK);
     expect(participationResponse.body).toEqual({
       data: {
         user: {
           data: expect.objectContaining({
-            name: 'test user',
-            email: 'test@example.com',
-            uuid: userUuid,
+            name: 'test',
+            email: 'example@example.com',
+            uuid: 'mock',
           }),
           meta: expect.any(Object),
         },
@@ -168,8 +152,8 @@ describe('ParticipationController (e2e)', () => {
             data: {
               project: {
                 data: expect.objectContaining({
-                  name: 'test-project',
-                  uuid: projectUuid,
+                  name: 'test-project-1',
+                  uuid: 'mock',
                 }),
                 expenses: {
                   data: [],

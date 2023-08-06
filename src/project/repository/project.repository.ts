@@ -12,5 +12,5 @@ export abstract class ProjectRepository {
     projectIds: number[],
   ): Promise<ProjectModel[]>;
 
-  abstract search(param: { shortName: string });
+  abstract search(param: { shortName?: string; name?: string });
 }

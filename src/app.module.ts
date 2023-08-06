@@ -3,7 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 
-import { EntityNotFoundExceptionFilter } from './EntityNotFoundException.filter';
+import { EntityNotFoundFilter } from './entity-not-found.filter';
 import LoggerModule from './logger/logger.module';
 import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
 import { ParticipationModule } from './participation/participation.module';
@@ -19,12 +19,12 @@ import { APP_FILTER } from '@nestjs/core';
     ParticipationModule,
     UserModule,
   ],
-  providers: [{ provide: APP_FILTER, useClass: EntityNotFoundExceptionFilter }],
+  providers: [{ provide: APP_FILTER, useClass: EntityNotFoundFilter }],
 })
 export class AppModule implements NestModule {
   static port: string;
   static apiPrefix: string;
-  static exceptionFilter: EntityNotFoundExceptionFilter;
+  static exceptionFilter: EntityNotFoundFilter;
 
   constructor(configService: ConfigService) {
     AppModule.port = configService.get('PORT');

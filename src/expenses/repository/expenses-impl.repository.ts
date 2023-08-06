@@ -1,12 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-
-
 import { DbClient } from '../../db/db-client';
 import { ExpenseCreate, Expenses, ExpensesTable } from '../../db/schemas';
 import { ExpenseModel } from '../expense.model';
 import { ExpensesRepository } from './expenses.repository';
-
 
 @Injectable()
 export class ExpensesImplRepository extends ExpensesRepository {

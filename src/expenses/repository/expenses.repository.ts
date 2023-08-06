@@ -1,4 +1,4 @@
-import { ExpenseCreate, Expenses } from '../../db/schemas';
+import { ExpenseCreate } from '../../db/schemas';
 
 export abstract class ExpensesRepository {
   abstract getFromProject(projectId: number);

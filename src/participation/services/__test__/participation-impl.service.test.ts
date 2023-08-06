@@ -182,10 +182,12 @@ describe('ParticipationImplService', () => {
           {
             share: 50,
             project: mockProjects[0],
+            joinedOn: new Date('2020-01-01'),
           },
           {
             share: 50,
             project: mockProjects[1],
+            joinedOn: new Date('2020-01-01'),
           },
         ],
       });

@@ -89,9 +89,8 @@ export class ExpensesImplService extends ExpensesService {
       date: date.toISOString(),
       payer_id: payerId,
       currency: (await this.currencyService.findByName(currencyName)).id,
-      payment_type: (
-        await this.paymentTypeService.findByName(paymentTypeName)
-      ).id,
+      payment_type: (await this.paymentTypeService.findByName(paymentTypeName))
+        .id,
     });
 
     return (await this.enrichExpenses([expense]))[0];
