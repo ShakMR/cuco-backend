@@ -17,7 +17,11 @@
   "coverageDirectory": "../coverage-e2e",
   "testEnvironment": "node",
   "coveragePathIgnorePatterns": [
-    ".test.ts"
+    ".test.ts",
+    "__test__",
+    "__e2e__",
+    "supabase",
+    "test"
   ],
   "setupFilesAfterEnv": [
     "./__test__/e2e-setup.ts",

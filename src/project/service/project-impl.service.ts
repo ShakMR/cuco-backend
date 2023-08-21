@@ -12,6 +12,8 @@ import { Project } from '../model/project.model';
 import { ProjectRepository } from '../repository/project.repository';
 import { ProjectService, ProjectServiceOptions } from './project.service';
 import { ProjectNameAlreadyExistsException } from '../exceptions/project-name-already-exists.exception';
+import { ExpenseNotFoundException } from '../../expenses/exceptions/expense-not-found.exception';
+import { ProjectNotFoundException } from '../exceptions/project-not-found.exception';
 
 @Injectable()
 export class ProjectImplService extends ProjectService {
@@ -61,12 +63,15 @@ export class ProjectImplService extends ProjectService {
     uuid: string,
   ): Promise<EnrichedExpenseModel> {
     const project = await this.getByUuid(projectUuid);
+
     const expense = await this.expensesService.getByUuid(uuid);
-    if (!expense || project.id !== expense.project.id) {
+
+    if (project.id !== expense.project.id) {
       this.logger.error(
         `Expense with uuid ${uuid} does not belong to project with uuid ${projectUuid}`,
       );
-      throw new Error('TODO: add proper error handling');
+
+      throw new ExpenseNotFoundException({ uuid });
     }
 
     return expense;

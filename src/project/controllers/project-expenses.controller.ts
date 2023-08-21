@@ -40,7 +40,7 @@ export class ProjectExpensesController {
   })
   @Get(':uuid')
   async getOne(
-    @Param('p_uuid') projectUuid,
+    @Param('p_uuid') projectUuid: string,
     @Param('uuid') uuid: string,
   ): Promise<ExpenseResponse> {
     const expense = await this.service.getExpense(projectUuid, uuid);

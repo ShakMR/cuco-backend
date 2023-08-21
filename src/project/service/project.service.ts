@@ -5,7 +5,7 @@ import {
 import { CreateProjectDto } from '../dto/project.dto';
 import { Project } from '../model/project.model';
 
-export type ProjectServiceOptions = { includeExpenses };
+export type ProjectServiceOptions = { includeExpenses: boolean };
 
 export abstract class ProjectService {
   abstract getAll(): Promise<Project[]>;
@@ -29,5 +29,8 @@ export abstract class ProjectService {
 
   abstract getAllById(projectsIds: number[]): Promise<Project[]>;
 
-  abstract searchByShortName(shortName: string, options: ProjectServiceOptions);
+  abstract searchByShortName(
+    shortName: string,
+    options: ProjectServiceOptions,
+  ): Promise<Project[]>;
 }

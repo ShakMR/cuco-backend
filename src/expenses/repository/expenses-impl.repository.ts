@@ -4,6 +4,8 @@ import { DbClient } from '../../db/db-client';
 import { ExpenseCreate, Expenses, ExpensesTable } from '../../db/schemas';
 import { ExpenseModel } from '../expense.model';
 import { ExpensesRepository } from './expenses.repository';
+import EntityNotFoundException from '../../db/exception/entity-not-found.exception';
+import { ExpenseNotFoundException } from '../exceptions/expense-not-found.exception';
 
 @Injectable()
 export class ExpensesImplRepository extends ExpensesRepository {
@@ -34,9 +36,15 @@ export class ExpensesImplRepository extends ExpensesRepository {
   }
 
   async getByUuid(uuid: string) {
-    const expense = await this.db.find({ uuid });
+    try {
+      const expense = await this.db.getBy({ uuid });
 
-    return ExpensesImplRepository.map(expense);
+      return ExpensesImplRepository.map(expense);
+    } catch (err) {
+      if (err instanceof EntityNotFoundException) {
+        throw new ExpenseNotFoundException({ uuid });
+      }
+    }
   }
 
   async save(expense: ExpenseCreate) {

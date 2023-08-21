@@ -65,7 +65,7 @@ describe('Project Controller (e2e)', () => {
             uuid: expect.any(String),
             createdAt: new Date().toISOString(),
             isOpen: true,
-            shortName: 'project-name',
+            shortName: 'tp1',
           },
           expenses: {
             data: [],
@@ -89,7 +89,7 @@ describe('Project Controller (e2e)', () => {
         name: 'test-project-1',
         uuid: expect.any(String),
         createdAt: new Date().toISOString(),
-        shortName: 'project-name',
+        shortName: 'tp1',
         isOpen: true,
       },
       expenses: {
@@ -108,41 +108,59 @@ describe('Project Controller (e2e)', () => {
     expect(getProjectResponse.statusCode).toBe(HttpStatus.NOT_FOUND);
   });
 
-  it('POST /projects/:uuid/expenses - 200', async () => {
-    const postExpensesResponse = await request(app.getHttpServer())
-      .post(`/projects/${projectUuid}/expenses`)
-      .send({
-        amount: 10,
-        concept: 'test-expense',
-        currency: 'euro',
-        date: new Date().toISOString(),
-        paymentType: 'debit',
-      });
-
-    expect(postExpensesResponse.statusCode).toBe(HttpStatus.CREATED);
-  });
-
-  it('GET /projects/:uuid/expenses - 200', async () => {
-    const getExpensesResponse = await request(app.getHttpServer())
-      .get(`/projects/${projectUuid}/expenses`)
+  it('GET /projects/:uuid?includeExpenses=true', async () => {
+    const getProjectResponse = await request(app.getHttpServer())
+      .get(`/projects/${projectUuid}?includeExpenses=true`)
       .send();
 
-    expect(getExpensesResponse.statusCode).toBe(HttpStatus.OK);
-    expect(getExpensesResponse.body.data).toHaveLength(2);
-    expect(getExpensesResponse.body).toEqual({
+    expect(getProjectResponse.statusCode).toBe(HttpStatus.OK);
+    expect(getProjectResponse.body).toEqual({
+      data: {
+        name: 'test-project-1',
+        uuid: expect.any(String),
+        createdAt: new Date().toISOString(),
+        shortName: 'tp1',
+        isOpen: true,
+      },
+      expenses: {
+        data: [
+          {
+            data: expect.objectContaining({
+              amount: 100,
+              concept: 'mock',
+            }),
+            meta: expect.any(Object),
+          },
+          {
+            data: expect.objectContaining({
+              amount: 200,
+              concept: 'mock',
+            }),
+            meta: expect.any(Object),
+          },
+        ],
+        meta: expect.any(Object),
+      },
+      meta: expect.any(Object),
+    });
+  });
+
+  it('GET /projects/search - 200', async () => {
+    const getSearchProject = await request(app.getHttpServer())
+      .get(`/projects/search?shortName=tp1`)
+      .send();
+
+    expect(getSearchProject.statusCode).toBe(HttpStatus.OK);
+    expect(getSearchProject.body).toEqual({
       data: [
         {
-          data: expect.objectContaining({
-            amount: 100,
-            concept: 'mock',
-          }),
-          meta: expect.any(Object),
-        },
-        {
-          data: expect.objectContaining({
-            amount: 200,
-            concept: 'mock',
-          }),
+          data: {
+            name: 'test-project-1',
+            uuid: expect.any(String),
+            createdAt: new Date().toISOString(),
+            shortName: 'tp1',
+            isOpen: true,
+          },
           meta: expect.any(Object),
         },
       ],
@@ -150,18 +168,143 @@ describe('Project Controller (e2e)', () => {
     });
   });
 
-  it('GET /projects/:uuid/expenses/:uuid - 200', async () => {
-    const getExpensesResponse = await request(app.getHttpServer())
-      .get(`/projects/${projectUuid}/expenses/mock-1`)
+  it('GET /projects/search?includeExpenses', async () => {
+    const getSearchProject = await request(app.getHttpServer())
+      .get(`/projects/search?shortName=tp1&includeExpenses=true`)
       .send();
 
-    expect(getExpensesResponse.statusCode).toBe(200);
-    expect(getExpensesResponse.body).toEqual({
-      data: expect.objectContaining({
-        amount: 100,
-        concept: 'mock',
-      }),
+    expect(getSearchProject.statusCode).toBe(HttpStatus.OK);
+    expect(getSearchProject.body).toEqual({
+      data: [
+        {
+          data: {
+            name: 'test-project-1',
+            uuid: expect.any(String),
+            createdAt: new Date().toISOString(),
+            shortName: 'tp1',
+            isOpen: true,
+          },
+          expenses: {
+            data: [
+              {
+                data: expect.objectContaining({
+                  amount: 100,
+                  concept: 'mock',
+                }),
+                meta: expect.any(Object),
+              },
+              {
+                data: expect.objectContaining({
+                  amount: 200,
+                  concept: 'mock',
+                }),
+                meta: expect.any(Object),
+              },
+            ],
+            meta: expect.any(Object),
+          },
+          meta: expect.any(Object),
+        },
+      ],
       meta: expect.any(Object),
+    });
+  });
+
+  describe('Expenses', () => {
+    it('POST /projects/:uuid/expenses - 200', async () => {
+      const postExpensesResponse = await request(app.getHttpServer())
+        .post(`/projects/${projectUuid}/expenses`)
+        .send({
+          amount: 10,
+          concept: 'test-expense',
+          currency: 'euro',
+          date: new Date().toISOString(),
+          paymentType: 'debit',
+        });
+
+      expect(postExpensesResponse.statusCode).toBe(HttpStatus.CREATED);
+    });
+
+    it('GET /projects/:uuid/expenses - 200', async () => {
+      const getExpensesResponse = await request(app.getHttpServer())
+        .get(`/projects/${projectUuid}/expenses`)
+        .send();
+
+      expect(getExpensesResponse.statusCode).toBe(HttpStatus.OK);
+      expect(getExpensesResponse.body.data).toHaveLength(2);
+      expect(getExpensesResponse.body).toEqual({
+        data: [
+          {
+            data: expect.objectContaining({
+              amount: 100,
+              concept: 'mock',
+            }),
+            meta: expect.any(Object),
+          },
+          {
+            data: expect.objectContaining({
+              amount: 200,
+              concept: 'mock',
+            }),
+            meta: expect.any(Object),
+          },
+        ],
+        meta: expect.any(Object),
+      });
+    });
+
+    it('GET /projects/:uuid/expenses/:uuid - 200', async () => {
+      const getExpensesResponse = await request(app.getHttpServer())
+        .get(`/projects/${projectUuid}/expenses/mock-1`)
+        .send();
+
+      expect(getExpensesResponse.statusCode).toBe(HttpStatus.OK);
+      expect(getExpensesResponse.body).toEqual({
+        data: expect.objectContaining({
+          amount: 100,
+          concept: 'mock',
+        }),
+        meta: expect.any(Object),
+      });
+    });
+
+    it('GET /projects/:uuid/expenses/:uuid - 404 - Entity not found', async () => {
+      const getExpensesResponse = await request(app.getHttpServer())
+        .get(`/projects/${projectUuid}/expenses/mock-100`)
+        .send();
+
+      expect(getExpensesResponse.statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(getExpensesResponse.body).toEqual(
+        expect.objectContaining({
+          errorCode: 'ERR-EXPE-001',
+        }),
+      );
+    });
+
+    it('GET /projects/:uuid/expenses/:uuid - 404 - Project Not Found', async () => {
+      const getExpensesResponse = await request(app.getHttpServer())
+        .get(`/projects/${projectUuid}3/expenses/mock-1`)
+        .send();
+
+      expect(getExpensesResponse.statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(getExpensesResponse.body).toEqual(
+        expect.objectContaining({
+          errorCode: 'ERR-PROJ-001',
+        }),
+      );
+    });
+
+    it("GET /projects/:uuid/expenses/:uuid - 404 - Expense doesn't belong", async () => {
+      const getExpensesResponse = await request(app.getHttpServer())
+        .get(`/projects/${projectUuid}/expenses/mock-3`)
+        .send();
+
+      expect(getExpensesResponse.statusCode).toBe(HttpStatus.NOT_FOUND);
+      expect(getExpensesResponse.body).toEqual(
+        expect.objectContaining({
+          errorCode: 'ERR-EXPE-001',
+        }),
+      );
     });
   });
 });
