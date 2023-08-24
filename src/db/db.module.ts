@@ -6,9 +6,16 @@ import { DbClient } from './db-client';
 import { DbConnector } from './db-connector';
 import { SupabaseSingletonConnectorService } from './supabase/supabase-connector.service';
 import { SupabaseService } from './supabase/supabase.service';
+import { MemoryDBService } from './memory-db/memory-db.service';
+import * as process from 'process';
+import { MemoryDbModule } from './memory-db/memory-db.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), LoggerModule],
+  imports: [
+    ConfigModule,
+    LoggerModule,
+    process.env.MEMORY_DB === 'true' ? MemoryDbModule : null,
+  ],
   providers: [
     {
       provide: DbConnector,
@@ -16,7 +23,8 @@ import { SupabaseService } from './supabase/supabase.service';
     },
     {
       provide: DbClient,
-      useClass: SupabaseService,
+      useClass:
+        process.env.MEMORY_DB === 'true' ? MemoryDBService : SupabaseService,
     },
   ],
   exports: [DbClient],

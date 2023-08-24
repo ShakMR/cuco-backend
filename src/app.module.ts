@@ -19,7 +19,12 @@ import { APP_FILTER } from '@nestjs/core';
     ParticipationModule,
     UserModule,
   ],
-  providers: [{ provide: APP_FILTER, useClass: EntityNotFoundFilter }],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: EntityNotFoundFilter,
+    },
+  ],
 })
 export class AppModule implements NestModule {
   static port: string;

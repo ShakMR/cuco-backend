@@ -1,5 +1,6 @@
 import { MemoryDBService, MemoryNotFound } from '../memory-db.service';
 import { MemoryDbRepository } from '../memory-db.repository';
+import { ConfigService } from '@nestjs/config';
 
 type Schema = {
   id: number;
@@ -27,7 +28,10 @@ describe('MemoryDBService', () => {
   };
 
   beforeEach(() => {
-    memoryDB = new MemoryDBService<Schema>(new MemoryDbRepository());
+    memoryDB = new MemoryDBService<Schema>(
+      new MemoryDbRepository(),
+      new ConfigService(),
+    );
     memoryDB.init('testTable');
     memoryDB.initData([record1, record2]);
   });

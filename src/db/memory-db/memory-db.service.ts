@@ -3,6 +3,7 @@ import { Injectable, Scope } from '@nestjs/common';
 import { DbClient, Filter } from '../db-client';
 import EntityNotFoundException from '../exception/entity-not-found.exception';
 import { MemoryDbRepository } from './memory-db.repository';
+import { ConfigService } from '@nestjs/config';
 
 export class MemoryNotFound extends EntityNotFoundException {}
 
@@ -12,7 +13,10 @@ export class MemoryNotFound extends EntityNotFoundException {}
 export class MemoryDBService<Schema> extends DbClient<Schema, number> {
   private tableName: string;
 
-  constructor(private repository: MemoryDbRepository) {
+  constructor(
+    private repository: MemoryDbRepository,
+    private config: ConfigService,
+  ) {
     super();
   }
 
@@ -87,7 +91,7 @@ export class MemoryDBService<Schema> extends DbClient<Schema, number> {
 
     const newElement = { ...newData, id: index + 1 } as Schema;
 
-    if (persist) {
+    if (persist || this.config.get('WRITE_IN_MEMORY_DATA')) {
       this.data = [
         ...this.data,
         {
