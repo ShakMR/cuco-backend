@@ -1,13 +1,13 @@
-import * as request from 'supertest';
-import { INestApplication } from '@nestjs/common';
-import { initApp } from './e2e-utils';
+import { createRequestSender, CustomRequest, initApp } from './e2e-utils';
 
 describe('UserController (e2e)', () => {
-  let app: INestApplication;
+  let request: CustomRequest;
 
   beforeAll(async () => {
     const config = await initApp();
-    app = config.app;
+    const app = config.app;
+
+    request = await createRequestSender(app, { login: true });
   });
 
   it('POST - /users/ - 200', async () => {
@@ -17,9 +17,11 @@ describe('UserController (e2e)', () => {
       type: 'user',
       externalId: 'externalId',
     };
-    const res = await request(app.getHttpServer())
-      .post('/users/')
-      .send(userData);
+    const res = await request({
+      path: '/users/',
+      body: userData,
+      method: 'POST',
+    });
 
     expect(res.statusCode).toBe(201);
     expect(res.body).toEqual({
@@ -32,13 +34,13 @@ describe('UserController (e2e)', () => {
   });
 
   it('GET - /users/:uuid - 404', async () => {
-    const res = await request(app.getHttpServer()).get('/users/uuid-0').send();
+    const res = await request({ path: '/users/uuid-0' });
 
     expect(res.statusCode).toBe(404);
   });
 
   it('GET - /users/:uuid - 200', async () => {
-    const res = await request(app.getHttpServer()).get(`/users/mock`).send();
+    const res = await request({ path: `/users/mock` });
 
     expect(res.statusCode).toBe(200);
     expect(res.body).toEqual({

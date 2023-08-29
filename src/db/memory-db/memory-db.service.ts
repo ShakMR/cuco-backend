@@ -10,7 +10,10 @@ export class MemoryNotFound extends EntityNotFoundException {}
 @Injectable({
   scope: Scope.TRANSIENT,
 })
-export class MemoryDBService<Schema> extends DbClient<Schema, number> {
+export class MemoryDBService<Schema extends { id }> extends DbClient<
+  Schema,
+  number
+> {
   private tableName: string;
 
   constructor(
@@ -95,7 +98,7 @@ export class MemoryDBService<Schema> extends DbClient<Schema, number> {
   async save(newData: Partial<Schema>, persist = false): Promise<Schema> {
     const index = this.data.length;
 
-    const newElement = { ...newData, id: index + 1 } as Schema;
+    const newElement = { ...newData, id: newData.id || index + 1 } as Schema;
 
     if (persist || this.config.get('WRITE_IN_MEMORY_DATA')) {
       this.data = [

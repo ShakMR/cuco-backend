@@ -4,6 +4,7 @@
     "json",
     "ts"
   ],
+  "moduleDirectories": ["node_modules"],
   "rootDir": "../src",
   "testRegex": [
     ".*\\.e2e-spec\\.ts$"

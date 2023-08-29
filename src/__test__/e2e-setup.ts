@@ -1,10 +1,12 @@
 import { initApp } from '../__e2e__/e2e-utils';
-import user from '../__e2e__/__mocks__/user';
-import project from '../__e2e__/__mocks__/project';
-import expenses from '../__e2e__/__mocks__/expenses';
-import currency from '../__e2e__/__mocks__/currency';
-import paymentType from '../__e2e__/__mocks__/payment-type';
-import participation from '../__e2e__/__mocks__/participation';
+import user from '../__e2e__/__mocks__/user.mock';
+import project from '../__e2e__/__mocks__/project.mock';
+import expenses from '../__e2e__/__mocks__/expenses.mock';
+import currency from '../__e2e__/__mocks__/currency.mock';
+import paymentType from '../__e2e__/__mocks__/payment-type.mock';
+import participation from '../__e2e__/__mocks__/participation.mock';
+import passport from '../__e2e__/__mocks__/passport.mock';
+
 import {
   CurrencyTable,
   ExpensesTable,
@@ -12,6 +14,7 @@ import {
   PaymentTypeTable,
   ProjectsTable,
   UserTable,
+  PassportTable,
 } from '../db/schemas';
 
 const mocks = {
@@ -21,6 +24,7 @@ const mocks = {
   [CurrencyTable]: currency,
   [PaymentTypeTable]: paymentType,
   [ParticipantTable]: participation,
+  [PassportTable]: passport,
 };
 
 beforeAll(async () => {
