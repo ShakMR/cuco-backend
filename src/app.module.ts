@@ -1,6 +1,7 @@
 import * as cors from 'cors';
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import helmet from 'helmet';
 
 import { EntityNotFoundFilter } from './entity-not-found.filter';
@@ -9,7 +10,9 @@ import { RequestLoggerMiddleware } from './logger/request-logger.middleware';
 import { ParticipationModule } from './participation/participation.module';
 import { ProjectModule } from './project/project.module';
 import { UserModule } from './user/user.module';
-import { APP_FILTER } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
+import { PassportModule } from './passport/passport.module';
+import { AuthTokenRefresh } from './auth/interceptor/refresh-token.interceptor';
 
 @Module({
   imports: [
@@ -18,11 +21,17 @@ import { APP_FILTER } from '@nestjs/core';
     LoggerModule,
     ParticipationModule,
     UserModule,
+    AuthModule,
+    PassportModule,
   ],
   providers: [
     {
       provide: APP_FILTER,
       useClass: EntityNotFoundFilter,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: AuthTokenRefresh,
     },
   ],
 })

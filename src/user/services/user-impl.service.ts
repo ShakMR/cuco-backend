@@ -5,6 +5,7 @@ import { UserRepository } from '../repositories/user.repository';
 import { CreateUserDto } from '../user.dto';
 import { BaseUser } from '../user.model';
 import { UserService } from './user.service';
+import { EmailAlreadyRegisteredException } from '../exceptions/EmailAlreadyRegisteredException';
 
 @Injectable()
 export class UserImplService extends UserService {
@@ -20,11 +21,23 @@ export class UserImplService extends UserService {
     return this.repository.getByUuid(uuid);
   }
 
-  create(userDto: CreateUserDto): Promise<BaseUser> {
+  async create(userDto: CreateUserDto): Promise<BaseUser> {
     const uuid = uuidV4();
+    const existingUser = await this.repository.findOne({
+      email: userDto.email,
+    });
+
+    if (existingUser !== null) {
+      throw new EmailAlreadyRegisteredException({ email: userDto.email });
+    }
+
     return this.repository.save({
       ...userDto,
       uuid,
     });
+  }
+
+  findOne(email: string, uuid: string): Promise<BaseUser> {
+    return this.repository.findOne({ email, uuid });
   }
 }

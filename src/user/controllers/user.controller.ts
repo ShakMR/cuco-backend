@@ -4,15 +4,25 @@ import {
   Get,
   Param,
   Post,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOkResponse,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 
 import { UserService } from '../services/user.service';
 import { CreateUserDto, SingleUserResponse } from '../user.dto';
 import { UserResponseBuilder } from './user-response.builder';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
 
+@ApiBearerAuth()
+@UseGuards(JwtAuthGuard)
 @ApiTags('users')
 @Controller('users')
 export class UserController {

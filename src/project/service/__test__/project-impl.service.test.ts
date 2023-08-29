@@ -158,7 +158,7 @@ describe('ProjectImplService', () => {
       expensesService.getByUuid.mockResolvedValueOnce(expense);
 
       await expect(service.getExpense('uuid', 'e-uuid')).rejects.toThrow(
-        new Error('TODO: add proper error handling'),
+        new Error('Expenses with context {"uuid":"e-uuid"} not found'),
       );
     });
   });

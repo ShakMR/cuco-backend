@@ -43,13 +43,19 @@ export class MemoryDBService<Schema> extends DbClient<Schema, number> {
   }
 
   private matchesAllProps(item: Schema, filters: Filter<Schema>): boolean {
-    const keys = Object.keys(filters);
+    const filterKeys = Object.keys(filters);
     let matches = true;
-    for (let i = 0; i < keys.length && matches; i++) {
-      const key = keys[i];
-      matches = item[key] === filters[key];
+    for (let i = 0; i < filterKeys.length && matches; i++) {
+      const key = filterKeys[i];
+      const filterValue = filters[key];
+      matches =
+        this.isNullOrUndefined(filterValue) || item[key] === filterValue;
     }
     return matches;
+  }
+
+  private isNullOrUndefined(value: null | undefined | any): boolean {
+    return value === null || value === undefined;
   }
 
   async findAll(filters: Filter<Schema>): Promise<Schema[]> {

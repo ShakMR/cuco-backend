@@ -18,4 +18,8 @@ export default class MockRepository extends UserRepository {
   getByUuid(uuid: string) {
     return Promise.resolve({ ...mockUser, uuid });
   }
+
+  findOne({ email }: { email: string }): Promise<BaseUser> {
+    return Promise.resolve({ ...mockUser, email });
+  }
 }

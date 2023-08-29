@@ -25,6 +25,7 @@ export class EntityNotFoundFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
       message: exception.message,
+      errorCode: exception.errorCode,
     });
 
     response.status(status).json({
@@ -32,6 +33,7 @@ export class EntityNotFoundFilter implements ExceptionFilter {
       timestamp: new Date().toISOString(),
       path: request.url,
       message: exception.message,
+      errorCode: exception.errorCode,
     });
   }
 }

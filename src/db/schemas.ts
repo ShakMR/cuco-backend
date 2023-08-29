@@ -8,10 +8,12 @@ export const PaymentTypeTable = 'PaymentType';
 export const CurrencyTable = 'Currency';
 export const ParticipantTable = 'Participation';
 
+export const PassportTable = 'Passport';
+
 export type Project = PublicTables['Project']['Row'];
 export type ProjectCreate = PublicTables['Project']['Insert'];
 export type Statistics = PublicTables['Statics']['Row'];
-export type Passport = PublicTables['Passport']['Row'];
+export type PassportSchema = PublicTables['Passport']['Row'];
 
 export type Expenses = PublicTables['Spending']['Row'];
 export type ExpenseCreate = PublicTables['Spending']['Insert'];

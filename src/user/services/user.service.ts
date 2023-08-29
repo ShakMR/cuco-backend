@@ -6,4 +6,6 @@ export abstract class UserService {
   abstract create(userDto: Partial<BaseUser>): Promise<BaseUser>;
 
   abstract getByUuid(uuid: string): Promise<BaseUser>;
+
+  abstract findOne(email: string, uuid?: string): Promise<BaseUser>;
 }

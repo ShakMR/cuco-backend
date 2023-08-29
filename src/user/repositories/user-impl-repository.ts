@@ -59,4 +59,14 @@ export class UserImplRepository extends UserRepository {
 
     return UserImplRepository.map(user);
   }
+
+  async findOne({ email, uuid }: BaseUser): Promise<BaseUser> {
+    const user = await this.db.find({ email, uuid });
+
+    if (!user) {
+      return null;
+    }
+
+    return UserImplRepository.map(user);
+  }
 }

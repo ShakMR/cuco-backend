@@ -27,9 +27,7 @@ describe('ExpensesImplRepository', () => {
       ],
     }).compile();
 
-    repository = await module.get<ExpensesImplRepository>(
-      ExpensesImplRepository,
-    );
+    repository = module.get<ExpensesImplRepository>(ExpensesImplRepository);
     db = await module.get(DbClient);
   });
 
@@ -53,11 +51,11 @@ describe('ExpensesImplRepository', () => {
       const expense = createMockDBExpense({});
       const expectedExpense = createMockExpense({});
 
-      db.find.mockResolvedValueOnce(expense);
+      db.getBy.mockResolvedValueOnce(expense);
 
       const result = await repository.getByUuid(expense.uuid);
       expect(result).toEqual(expectedExpense);
-      expect(db.find).toHaveBeenCalledWith({ uuid: expense.uuid });
+      expect(db.getBy).toHaveBeenCalledWith({ uuid: expense.uuid });
     });
   });
 

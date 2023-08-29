@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import { DbClient } from '../../db/db-client';
-import { Project, ProjectCreate } from '../../db/schemas';
+import { Project, ProjectCreate, ProjectsTable } from '../../db/schemas';
 import { ProjectNotFoundException } from '../exceptions/project-not-found.exception';
 import { Project as ProjectModel } from '../model/project.model';
 import { ProjectRepository } from './project.repository';
@@ -11,10 +11,7 @@ import EntityNotFoundException from '../../db/exception/entity-not-found.excepti
 export class ProjectImplRepository extends ProjectRepository {
   constructor(private db: DbClient<Project>) {
     super();
-  }
-
-  onModuleInit() {
-    this.db.init('Project');
+    this.db.init(ProjectsTable);
   }
 
   static map({ created_at, short_name, ...rest }: Project): ProjectModel {
