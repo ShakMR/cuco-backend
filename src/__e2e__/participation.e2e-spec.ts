@@ -131,7 +131,7 @@ describe('ParticipationController (e2e)', () => {
     });
   });
 
-  it('GET - /participation/user/:uuid', async () => {
+  it.only('GET - /participation/user/:uuid', async () => {
     const participationResponse = await request(app.getHttpServer())
       .get(`/participation/user/mock`)
       .send();

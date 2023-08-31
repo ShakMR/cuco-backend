@@ -14,8 +14,6 @@ import {
 } from '../expense.model';
 import { ExpensesRepository } from '../repository/expenses.repository';
 import { ExpensesService } from './expenses.service';
-import EntityNotFoundException from '../../db/exception/entity-not-found.exception';
-import { ExpenseNotFoundException } from '../exceptions/expense-not-found.exception';
 
 type Relations = {
   payer: BaseUser;

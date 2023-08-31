@@ -1,13 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-
-
 import { ResponseDto } from '../../common/dto/response.dto';
 import { CurrencyDto } from '../../currency/currency.dto';
 import { PaymentTypeDto } from '../../payment-type/payment-type.dto';
 import { PaymentTypeName } from '../../payment-type/payment-type.model';
 import { UserDto } from '../../user/user.dto';
-
 
 export class ExpenseDto {
   @ApiProperty()
