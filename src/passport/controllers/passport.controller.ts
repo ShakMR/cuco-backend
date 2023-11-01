@@ -20,7 +20,7 @@ export class PassportController {
     type: SignUpDto,
   })
   @UsePipes(new ValidationPipe({ transform: true }))
-  @HttpCode(HttpStatus.CREATED)
+  @HttpCode(HttpStatus.NO_CONTENT)
   async signUp(@Body() { email, password, name }: SignUpDto) {
     await this.service.createNewUser({ email, password, name });
   }

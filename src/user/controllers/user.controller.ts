@@ -7,6 +7,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Request,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -42,6 +43,15 @@ export class UserController {
     const newUser = await this.service.create(userDto);
 
     return this.responseBuilder.buildSingleResponse(newUser);
+  }
+
+  @Get('/me')
+  @ApiOkResponse({
+    description: 'User data',
+    type: SingleUserResponse,
+  })
+  async getMe(@Request() req): Promise<SingleUserResponse> {
+    return this.responseBuilder.buildSingleResponse(req.user);
   }
 
   @Get('/:uuid')

@@ -91,9 +91,32 @@ export class ProjectImplService extends ProjectService {
       name: data.name,
       uuid,
       isOpen: true,
+      short_name: this.createProjectShortNameFromName(data.name),
     });
 
     return newProject;
+  }
+
+  private createProjectShortNameFromName(name: string) {
+    let suggestedName = name
+      .split(/[ -_]/)
+      .map((word) => word.charAt(0))
+      .join('');
+
+    while (suggestedName.length < 3) {
+      suggestedName += this.getRandomCharBetween('A', 'Z');
+    }
+
+    return suggestedName;
+  }
+
+  private getRandomCharBetween(charStart, charEnd) {
+    return String.fromCharCode(
+      Math.round(
+        (Math.random() * (charEnd.charCodeAt(0) - charStart.charCodeAt(0))) %
+          (charEnd.charCodeAt(0) - charStart.charCodeAt(0)),
+      ) + charStart.charCodeAt(0),
+    );
   }
 
   getAllById(projectsIds: number[]): Promise<Project[]> {

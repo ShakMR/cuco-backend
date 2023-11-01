@@ -19,7 +19,7 @@ describe('Auth (e2e)', () => {
       });
 
     expect(loginResponse.status).toBe(HttpStatus.OK);
-    expect(loginResponse.body).toEqual({
+    expect(loginResponse.body.data).toEqual({
       token: expect.any(String),
     });
   });

@@ -20,7 +20,7 @@ export const createArrayOfMockProject = (entities: Partial<ProjectModel>[]) =>
   entities.map(createMockProject);
 
 const mockDBProject: Project = {
-  id: 1234,
+  id: 1,
   isOpen: true,
   name: 'Project Name',
   created_at: '2020-01-01T00:00:00.000Z',

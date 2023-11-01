@@ -19,6 +19,6 @@ describe('ParticipationController (e2e)', () => {
         name: 'Name',
       });
 
-    expect(signUpResponse.status).toBe(HttpStatus.CREATED);
+    expect(signUpResponse.status).toBe(HttpStatus.NO_CONTENT);
   });
 });

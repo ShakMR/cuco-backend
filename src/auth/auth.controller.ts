@@ -21,7 +21,12 @@ export class AuthController {
     type: LoginRequestDto,
   })
   @HttpCode(HttpStatus.OK)
-  login(@Request() req): LoginAuthDto {
-    return this.authService.login(req.user);
+  @ApiOkResponse({
+    type: LoginAuthDto,
+  })
+  login(@Request() req): { data: LoginAuthDto } {
+    return {
+      data: this.authService.login(req.user),
+    };
   }
 }

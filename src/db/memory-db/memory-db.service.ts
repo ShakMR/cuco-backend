@@ -4,6 +4,7 @@ import { DbClient, Filter } from '../db-client';
 import EntityNotFoundException from '../exception/entity-not-found.exception';
 import { MemoryDbRepository } from './memory-db.repository';
 import { ConfigService } from '@nestjs/config';
+import { LoggerService } from '../../logger/logger.service';
 
 export class MemoryNotFound extends EntityNotFoundException {}
 
@@ -19,15 +20,21 @@ export class MemoryDBService<Schema extends { id }> extends DbClient<
   constructor(
     private repository: MemoryDbRepository,
     private config: ConfigService,
+    private logger: LoggerService,
   ) {
     super();
+    logger.debug('Starting with in memory DB');
   }
 
   get data(): Schema[] {
+    this.logger.debug(`Getting data from ${this.tableName}`);
     return this.repository.getData(this.tableName);
   }
 
   set data(data: Schema[]) {
+    this.logger.debug(
+      `Inserting data into ${this.tableName} - ${JSON.stringify(data)}`,
+    );
     this.repository.setData(this.tableName, data);
   }
 
