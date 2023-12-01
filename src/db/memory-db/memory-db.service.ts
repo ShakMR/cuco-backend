@@ -28,7 +28,9 @@ export class MemoryDBService<Schema extends { id }> extends DbClient<
 
   get data(): Schema[] {
     this.logger.debug(`Getting data from ${this.tableName}`);
-    return this.repository.getData(this.tableName);
+    const data = this.repository.getData(this.tableName);
+    this.logger.debug(`Current data: ${JSON.stringify(data)}`);
+    return data;
   }
 
   set data(data: Schema[]) {

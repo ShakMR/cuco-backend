@@ -23,7 +23,8 @@
     "test:integration": "jest --testNamePattern='.*\\.integration\\.ts$'",
     "supabase": "supabase",
     "supabase:start": "supabase start",
-    "supabase:genTypes": "supabase gen types typescript --project-id qpaegipbpzcynbtsdgad > src/db/supabase/database.types.ts"
+    "supabase:genTypes": "supabase gen types typescript --project-id qpaegipbpzcynbtsdgad > src/db/supabase/database.types.ts",
+    "db:dev:genEntities": "ts-node-esm ./scripts/devSetupMemoryDB.ts"
   },
   "dependencies": {
     "@golevelup/ts-jest": "^0.4.0",
