@@ -53,4 +53,9 @@ export class ParticipationImplRepository extends ParticipationRepository {
     const res = await this.db.findAll({ user_id: id });
     return res.map(ParticipationImplRepository.map);
   }
+
+  async findByProject(id): Promise<ParticipationModel[]> {
+    const res = await this.db.findAll({ project_id: id });
+    return res.map(ParticipationImplRepository.map);
+  }
 }

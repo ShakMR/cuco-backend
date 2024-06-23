@@ -13,6 +13,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { PassportModule } from './passport/passport.module';
 import { AuthTokenRefresh } from './auth/interceptor/refresh-token.interceptor';
+import { DebugModule } from './debug/debug.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AuthTokenRefresh } from './auth/interceptor/refresh-token.interceptor';
     UserModule,
     AuthModule,
     PassportModule,
+    DebugModule,
   ],
   providers: [
     {

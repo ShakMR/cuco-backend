@@ -1,5 +1,8 @@
 import { ParticipationCreate } from '../../db/schemas';
-import { Participation as ParticipationModel } from '../participation.model';
+import {
+  Participation,
+  Participation as ParticipationModel,
+} from '../participation.model';
 
 export abstract class ParticipationRepository {
   abstract save(
@@ -12,4 +15,5 @@ export abstract class ParticipationRepository {
   ): Promise<ParticipationModel | undefined>;
 
   abstract findByUser(id): Promise<ParticipationModel[]>;
+  abstract findByProject(id): Promise<ParticipationModel[]>;
 }

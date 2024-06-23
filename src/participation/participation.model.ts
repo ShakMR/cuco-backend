@@ -22,3 +22,12 @@ export type UserParticipation = {
     joinedOn: Date;
   }[];
 };
+
+export type ProjectParticipants = {
+  project: Project;
+  participants: {
+    user: BaseUser;
+    share: number;
+    joinedOn: Date;
+  }[];
+};

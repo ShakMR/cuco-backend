@@ -2,7 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 import { ResponseDto } from '../common/dto/response.dto';
 import { ProjectListDto } from '../project/dto/project-list.dto';
-import { SingleProjectResponse } from '../project/dto/project.dto';
+import {
+  SingleProjectResponse,
+  SingleProjectWithoutExpenses,
+} from '../project/dto/project.dto';
 import { SingleUserResponse } from '../user/user.dto';
 
 export class ParticipationDto {
@@ -42,15 +45,49 @@ export class ParticipationInProject {
   share: number;
 }
 
+export class Participant {
+  @ApiProperty({
+    type: SingleUserResponse,
+  })
+  user: SingleUserResponse;
+  @ApiProperty()
+  share: number;
+  @ApiProperty({
+    type: Date,
+  })
+  joinedOn: Date;
+}
+
+export class ParticipantDto extends ResponseDto<Participant> {
+  @ApiProperty({ type: Participant })
+  data: Participant;
+}
+
+export class ParticipantInProjectDto extends ResponseDto<ParticipationInProject> {
+  @ApiProperty({ type: ParticipationInProject })
+  data: ParticipationInProject;
+}
+
 export class UserParticipationDto {
   @ApiProperty({
-    type: SingleProjectResponse,
+    type: SingleUserResponse,
   })
   user: SingleUserResponse;
   @ApiProperty({
-    type: [ResponseDto<ParticipationInProject>],
+    type: [ParticipantInProjectDto],
   })
-  participation: ResponseDto<ParticipationInProject>[];
+  participation: ParticipantInProjectDto[];
+}
+
+export class ProjectParticipationDto {
+  @ApiProperty({
+    type: SingleProjectWithoutExpenses,
+  })
+  project: SingleProjectWithoutExpenses;
+  @ApiProperty({
+    type: [ParticipantDto],
+  })
+  participants: ParticipantDto[];
 }
 
 export class UserParticipationResponse extends ResponseDto<UserParticipationDto> {
@@ -58,4 +95,11 @@ export class UserParticipationResponse extends ResponseDto<UserParticipationDto>
     type: UserParticipationDto,
   })
   data: UserParticipationDto;
+}
+
+export class ProjectParticipantsResponse extends ResponseDto<ProjectParticipationDto> {
+  @ApiProperty({
+    type: ProjectParticipationDto,
+  })
+  data: ProjectParticipationDto;
 }

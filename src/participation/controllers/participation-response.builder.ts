@@ -1,18 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 
-import { ResponseDto } from '../../common/dto/response.dto';
 import { AppError } from '../../common/exceptions/AppError';
 import { replaceInTemplate } from '../../common/utils/replaceInTemplate';
 import { ProjectResponseBuilder } from '../../project/controllers/project-response.builder';
 import { UserResponseBuilder } from '../../user/controllers/user-response.builder';
 import {
-  ParticipationInProject,
+  ParticipantInProjectDto,
+  ProjectParticipantsResponse,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
+  ProjectParticipants,
   UserParticipation,
 } from '../participation.model';
 import { ParticipationTransformer } from './participation.transformer';
@@ -23,6 +24,7 @@ export class ParticipationResponseBuilder {
   private readonly participationTemplate: string =
     '?user=:user_uuid:&project=:project_uuid:';
   private readonly userParticipationTemplate: string = '/user/:uuid:';
+  private readonly projectParticipantsTemplate: string = '/project/:uuid:';
 
   constructor(
     private configService: ConfigService,
@@ -100,7 +102,7 @@ export class ParticipationResponseBuilder {
   private buildParticipationPartial({
     user,
     participation,
-  }: UserParticipation): ResponseDto<ParticipationInProject>[] {
+  }: UserParticipation): ParticipantInProjectDto[] {
     return participation.map(({ project, share, joinedOn }) => ({
       data: {
         project: this.projectResponseBuilder.buildSingleResponse(project),
@@ -116,5 +118,41 @@ export class ParticipationResponseBuilder {
         },
       },
     }));
+  }
+
+  public buildProjectParticipantsResponse(
+    projectParticipants: ProjectParticipants,
+  ): ProjectParticipantsResponse {
+    return {
+      data: {
+        project: this.projectResponseBuilder.buildSingleResponse(
+          projectParticipants.project,
+        ),
+        participants: projectParticipants.participants.map(
+          ({ user, share, joinedOn }) => ({
+            data: {
+              user: this.userResponseBuilder.buildSingleResponse(user),
+              share,
+              joinedOn,
+            },
+            meta: {
+              links: {
+                self: replaceInTemplate(this.participationTemplate, {
+                  user_uuid: user.uuid,
+                  project_uuid: projectParticipants.project.uuid,
+                }),
+              },
+            },
+          }),
+        ),
+      },
+      meta: {
+        links: {
+          self: replaceInTemplate(this.projectParticipantsTemplate, {
+            uuid: projectParticipants.project.uuid,
+          }),
+        },
+      },
+    };
   }
 }

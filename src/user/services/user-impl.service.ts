@@ -40,4 +40,8 @@ export class UserImplService extends UserService {
   findOne(email: string, uuid: string): Promise<BaseUser> {
     return this.repository.findOne({ email, uuid });
   }
+
+  getAllById(ids: number[]): Promise<BaseUser[]> {
+    return Promise.all<BaseUser>(ids.map(this.getById.bind(this)));
+  }
 }

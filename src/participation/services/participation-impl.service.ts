@@ -7,10 +7,12 @@ import { ParticipationNotFoundException } from '../exceptions/participation-not-
 import { CreateParticipationDto } from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
+  ProjectParticipants,
   UserParticipation,
 } from '../participation.model';
 import { ParticipationRepository } from '../repositories/participation.repository';
 import { ParticipationService } from './participation.service';
+import { ProjectNotFoundException } from '../../project/exceptions/project-not-found.exception';
 
 @Injectable()
 export class ParticipationImplService extends ParticipationService {
@@ -94,6 +96,30 @@ export class ParticipationImplService extends ParticipationService {
         share,
         joinedOn,
         project: projects[index],
+      })),
+    };
+  }
+
+  async getParticipantsForProject(uuid: string): Promise<ProjectParticipants> {
+    const project = await this.projectService.getByUuid(uuid);
+
+    if (!project) {
+      throw new ProjectNotFoundException({ uuid });
+    }
+
+    const participation = await this.repository.findByProject(project.id);
+
+    const userIds = participation.map(({ user }) => user.id);
+
+    const users =
+      userIds.length > 0 ? await this.userService.getAllById(userIds) : [];
+
+    return {
+      project,
+      participants: participation.map(({ share, joinedOn }, index) => ({
+        share,
+        joinedOn,
+        user: users[index],
       })),
     };
   }

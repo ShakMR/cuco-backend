@@ -15,6 +15,7 @@ import { NotFoundException as EntityNotFound } from '../../common/exceptions/Not
 import { LoggerService } from '../../logger/logger.service';
 import {
   CreateParticipationDto,
+  ProjectParticipantsResponse,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
@@ -84,6 +85,20 @@ export class ParticipationController {
     const userParticipation = await this.service.getParticipationForUser(uuid);
     return this.responseBuilder.buildUserParticipationResponse(
       userParticipation,
+    );
+  }
+
+  @Get('/project/:uuid')
+  @ApiOkResponse({
+    type: ProjectParticipantsResponse,
+  })
+  async getProjectParticipants(
+    @Param('uuid') uuid: string,
+  ): Promise<ProjectParticipantsResponse> {
+    const projectParticipants =
+      await this.service.getParticipantsForProject(uuid);
+    return this.responseBuilder.buildProjectParticipantsResponse(
+      projectParticipants,
     );
   }
 }
