@@ -1,6 +1,9 @@
 import { Injectable } from '@nestjs/common';
 
-import { CreateParticipationDto } from '../participation.dto';
+import {
+  CreateParticipationDto,
+  SetUserParticipationDto,
+} from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
   ProjectParticipants,
@@ -22,4 +25,9 @@ export abstract class ParticipationService {
   abstract getParticipantsForProject(
     uuid: string,
   ): Promise<ProjectParticipants>;
+
+  abstract setParticipationShare(
+    uuid: string,
+    newParticipation: SetUserParticipationDto[],
+  ): Promise<void>;
 }

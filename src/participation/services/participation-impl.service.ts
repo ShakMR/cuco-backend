@@ -4,7 +4,10 @@ import { ProjectService } from '../../project/service/project.service';
 import { UserNotFoundException } from '../../user/exceptions/user-not-found.exception';
 import { UserService } from '../../user/services/user.service';
 import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
-import { CreateParticipationDto } from '../participation.dto';
+import {
+  CreateParticipationDto,
+  SetUserParticipationDto,
+} from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
   ProjectParticipants,
@@ -13,6 +16,8 @@ import {
 import { ParticipationRepository } from '../repositories/participation.repository';
 import { ParticipationService } from './participation.service';
 import { ProjectNotFoundException } from '../../project/exceptions/project-not-found.exception';
+import user from '../../user/__mocks__/user';
+import { share } from 'rxjs';
 
 @Injectable()
 export class ParticipationImplService extends ParticipationService {
@@ -122,5 +127,33 @@ export class ParticipationImplService extends ParticipationService {
         user: users[index],
       })),
     };
+  }
+
+  async setParticipationShare(
+    uuid: string,
+    newParticipation: SetUserParticipationDto[],
+  ): Promise<void> {
+    const project = await this.projectService.getByUuid(uuid);
+
+    if (!project) {
+      throw new ProjectNotFoundException({ uuid });
+    }
+
+    const participation = await this.repository.findByProject(project.id);
+
+    const newUserIds = newParticipation.map(({ userUuid }) => userUuid);
+    const userIds = participation.map(({ user }) => user.id);
+
+    const currentUsers =
+      userIds.length > 0 ? await this.userService.getAllById(userIds) : [];
+    currentUsers.forEach((user) => {
+      if (!newUserIds.includes(user.uuid)) {
+        throw new UserNotFoundException({ uuid: user.uuid });
+      }
+    });
+
+    const promises = newParticipation.map(this.repository.save);
+
+    await Promise.all(promises);
   }
 }

@@ -24,6 +24,7 @@ export type Currency = PublicTables['Currency']['Row'];
 
 export type Participation = PublicTables['Participation']['Row'];
 export type ParticipationCreate = PublicTables['Participation']['Insert'];
+export type ParticipationUpdate = PublicTables['Participation']['Update'];
 
 type withUser = {
   User: User;

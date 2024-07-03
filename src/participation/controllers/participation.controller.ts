@@ -5,6 +5,7 @@ import {
   NotFoundException,
   Param,
   Post,
+  Put,
   Query,
   UsePipes,
   ValidationPipe,
@@ -16,6 +17,7 @@ import { LoggerService } from '../../logger/logger.service';
 import {
   CreateParticipationDto,
   ProjectParticipantsResponse,
+  SetUserParticipationDto,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
@@ -100,5 +102,29 @@ export class ParticipationController {
     return this.responseBuilder.buildProjectParticipantsResponse(
       projectParticipants,
     );
+  }
+
+  @Put('/project/:uuid')
+  @ApiOkResponse({})
+  @ApiBody({
+    type: [SetUserParticipationDto],
+  })
+  async setProjectParticipationShare(
+    @Param('uuid') uuid: string,
+    @Body() projectParticipationShare: SetUserParticipationDto[],
+  ): Promise<void> {
+    const total = projectParticipationShare.reduce(
+      (total, projectParticipationShare) =>
+        total + projectParticipationShare.share,
+      0,
+    );
+
+    if (total > 100 || total < 0) {
+      throw new Error(
+        'The sum of all users participation share is not between 100 and 0',
+      );
+    }
+
+    await this.service.setParticipationShare(uuid, projectParticipationShare);
   }
 }

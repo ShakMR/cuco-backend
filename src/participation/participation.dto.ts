@@ -37,6 +37,13 @@ export class CreateParticipationDto {
   projectUuid: string;
 }
 
+export class SetUserParticipationDto {
+  @ApiProperty()
+  userUuid: string;
+  @ApiProperty()
+  share: number;
+}
+
 export class ParticipationInProject {
   @ApiProperty({
     type: ProjectListDto,
