@@ -26,6 +26,7 @@ export class ExpensesImplRepository extends ExpensesRepository {
       currency: { id: expense.currency },
       paymentType: { id: expense.payment_type },
       project: { id: expense.project_id },
+      active: expense.active,
     };
   }
 

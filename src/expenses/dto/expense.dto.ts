@@ -29,6 +29,8 @@ export class ExpenseDto {
     type: PaymentTypeDto,
   })
   paymentType?: PaymentTypeDto;
+  @ApiProperty()
+  active: boolean;
 }
 
 export class CreateExpenseDto {

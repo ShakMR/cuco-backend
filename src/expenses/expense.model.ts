@@ -1,6 +1,6 @@
 import { Currency } from '../currency/currency.model';
 import { PaymentType } from '../payment-type/payment-type.model';
-import { BaseUser, GhostUser, User } from '../user/user.model';
+import { BaseUser } from '../user/user.model';
 
 export interface ExpenseModel {
   id: number;
@@ -16,6 +16,7 @@ export interface ExpenseModel {
     id?: number;
     uuid?: string;
   };
+  active: boolean;
 }
 
 export interface EnrichedExpenseModel extends ExpenseModel {
