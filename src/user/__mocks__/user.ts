@@ -9,6 +9,7 @@ export const mockDBUser: User = {
   email: 'email@example.com',
   name: 'name',
   is_ghost: false,
+  active: true,
 };
 
 const mockUser: BaseUser = {
@@ -19,8 +20,10 @@ const mockUser: BaseUser = {
   externalId: 'externalId',
   email: 'email@example.com',
   name: 'name',
+  active: true,
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const { uuid, ..._userWithoutUuid } = mockUser;
 
 export default mockUser;

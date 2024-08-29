@@ -32,6 +32,7 @@ describe('ExpenseTransformer', () => {
           name: 'name',
           type: 'user',
         },
+        active: true,
       });
     });
 
@@ -62,6 +63,7 @@ describe('ExpenseTransformer', () => {
           name: 'name',
           type: 'user',
         },
+        active: true,
       });
     });
   });

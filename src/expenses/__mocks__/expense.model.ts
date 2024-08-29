@@ -17,6 +17,7 @@ const mockExpense: ExpenseModel = {
   payer: { id: 1 },
   currency: { id: 1 },
   paymentType: { id: 1 },
+  active: true,
 };
 
 const mockEnrichedExpense: EnrichedExpenseModel = {
@@ -37,6 +38,7 @@ const mockDBExpense: Expenses = {
   payer_id: 1,
   currency: 1,
   payment_type: 1,
+  active: true,
 };
 
 export default mockExpense;

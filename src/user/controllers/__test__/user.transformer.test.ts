@@ -11,6 +11,7 @@ describe('UserTransformer', () => {
       externalId: 'externalId',
       email: 'email@example.com',
       name: 'name',
+      active: true,
     };
 
     const transformer = new UserTransformer();
@@ -23,6 +24,7 @@ describe('UserTransformer', () => {
       externalId: 'externalId',
       email: 'email@example.com',
       name: 'name',
+      active: true,
     });
   });
 });

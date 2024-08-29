@@ -23,6 +23,7 @@ export class UserImplRepository extends UserRepository {
       createdAt: new Date(user.created_at),
       email: user.email,
       externalId: user.external_id,
+      active: user.active,
     };
   }
 

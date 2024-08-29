@@ -11,6 +11,7 @@ export type BaseUser = {
   email: string;
   createdAt: Date;
   type: UserType;
+  active: boolean;
 };
 
 export type User = BaseUser & {

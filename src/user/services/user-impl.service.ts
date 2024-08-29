@@ -34,6 +34,7 @@ export class UserImplService extends UserService {
     return this.repository.save({
       ...userDto,
       uuid,
+      active: true,
     });
   }
 

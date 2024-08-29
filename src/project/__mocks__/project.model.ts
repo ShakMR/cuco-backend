@@ -4,7 +4,7 @@ import { Project } from '../../db/schemas';
 import { Project as ProjectModel } from '../model/project.model';
 
 const mockProject: ProjectModel = {
-  id: 1234,
+  id: 1,
   isOpen: true,
   name: 'Project Name',
   createdAt: fixDay,

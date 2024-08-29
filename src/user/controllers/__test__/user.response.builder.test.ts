@@ -45,6 +45,7 @@ describe('UserResponseBuilder', () => {
         externalId: 'externalId',
         email: 'email@example.com',
         name: 'name',
+        active: true,
       });
     });
 
