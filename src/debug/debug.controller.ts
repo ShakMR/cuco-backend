@@ -1,5 +1,5 @@
 import { ApiTags } from '@nestjs/swagger';
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { DebugService, Entities } from './debug.service';
 import { AppError } from '../common/exceptions/AppError';
 
@@ -25,5 +25,12 @@ export class DebugController {
       console.log(e);
       throw e;
     }
+  }
+
+  @Get('/debug-any')
+  async dumpAny(@Query('entity') entity: string) {
+    return {
+      data: await this.debugService.dump(entity as unknown as Entities),
+    };
   }
 }

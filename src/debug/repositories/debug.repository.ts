@@ -51,3 +51,13 @@ export class DebugParticipationRepository extends DebugRepository<Participant> {
     super(db, ParticipantTable);
   }
 }
+
+@Injectable()
+export class AnyRepository {
+  constructor(private db: DbClient<any>) {}
+
+  dump(entity: string) {
+    this.db.init(entity);
+    return this.db.getAll();
+  }
+}

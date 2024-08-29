@@ -5,6 +5,7 @@ import { DebugService } from './debug.service';
 import { ProdDebugService } from './prod-debug.service';
 import * as process from 'process';
 import {
+  AnyRepository,
   DebugExpensesRepository,
   DebugParticipationRepository,
   DebugProjectRepository,
@@ -24,6 +25,7 @@ import {
     DebugProjectRepository,
     DebugExpensesRepository,
     DebugParticipationRepository,
+    AnyRepository,
   ],
 })
 export class DebugModule {}

@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import {
+  AnyRepository,
   DebugExpensesRepository,
   DebugParticipationRepository,
   DebugProjectRepository,
@@ -27,6 +28,7 @@ export class DebugService {
     private projectRepo: DebugProjectRepository,
     private expensesRepo: DebugExpensesRepository,
     private participationRepo: DebugParticipationRepository,
+    private anyRepository: AnyRepository,
   ) {
     this.repositories = {
       [Entities.user]: userRepo,
@@ -39,7 +41,8 @@ export class DebugService {
   public dump(entity: Entities): any {
     if (Object.values(Entities).includes(entity)) {
       return this.repositories[Entities[entity]].dump();
+    } else {
+      return this.anyRepository.dump(entity as unknown as string);
     }
-    throw new EntityNotFound();
   }
 }
