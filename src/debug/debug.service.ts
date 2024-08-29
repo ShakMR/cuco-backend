@@ -1,30 +1,45 @@
 import { Injectable } from '@nestjs/common';
 import {
   DebugExpensesRepository,
+  DebugParticipationRepository,
   DebugProjectRepository,
   DebugRepository,
   DebugUserRepository,
 } from './repositories/debug.repository';
 
-type Entities = 'user' | 'project' | 'expenses';
+export enum Entities {
+  'user',
+  'project',
+  'expenses',
+  'participation',
+}
+
+class EntityNotFound extends Error {
+  errorCode = 1;
+}
 
 @Injectable()
 export class DebugService {
-  private repositories: Record<Entities, DebugRepository>;
+  private repositories: Record<Entities, DebugRepository<any>>;
 
   constructor(
     private userRepo: DebugUserRepository,
     private projectRepo: DebugProjectRepository,
     private expensesRepo: DebugExpensesRepository,
+    private participationRepo: DebugParticipationRepository,
   ) {
     this.repositories = {
-      user: userRepo,
-      project: projectRepo,
-      expenses: expensesRepo,
+      [Entities.user]: userRepo,
+      [Entities.project]: projectRepo,
+      [Entities.expenses]: expensesRepo,
+      [Entities.participation]: participationRepo,
     };
   }
 
   public dump(entity: Entities): any {
-    return this.repositories[entity].dump();
+    if (Object.values(Entities).includes(entity)) {
+      return this.repositories[Entities[entity]].dump();
+    }
+    throw new EntityNotFound();
   }
 }

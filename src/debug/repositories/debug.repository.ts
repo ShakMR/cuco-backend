@@ -2,43 +2,52 @@ import { Injectable } from '@nestjs/common';
 import {
   Expenses,
   ExpensesTable,
+  ParticipantTable,
   Project,
   ProjectsTable,
   User,
   UserTable,
 } from '../../db/schemas';
 import { DbClient } from '../../db/db-client';
+import { Participant } from '../../participation/participation.dto';
 
-export abstract class DebugRepository {
-  public abstract dump(): Promise<any>;
-}
+export class DebugRepository<T> {
+  private _db: DbClient<T>;
 
-@Injectable()
-export class DebugUserRepository implements DebugRepository {
-  constructor(private db: DbClient<User>) {
-    db.init(UserTable);
+  constructor(db: DbClient<T>, table: string) {
+    db.init(table);
+    this._db = db;
   }
-  async dump() {
-    return this.db.getAll();
-  }
-}
 
-@Injectable()
-export class DebugProjectRepository implements DebugRepository {
-  constructor(private db: DbClient<Project>) {
-    db.init(ProjectsTable);
-  }
-  dump() {
-    return this.db.getAll();
+  public dump(): Promise<any> {
+    return this._db.getAll();
   }
 }
 
 @Injectable()
-export class DebugExpensesRepository implements DebugRepository {
-  constructor(private db: DbClient<Expenses>) {
-    db.init(ExpensesTable);
+export class DebugUserRepository extends DebugRepository<User> {
+  constructor(db: DbClient<User>) {
+    super(db, UserTable);
   }
-  dump() {
-    return this.db.getAll();
+}
+
+@Injectable()
+export class DebugProjectRepository extends DebugRepository<Project> {
+  constructor(db: DbClient<Project>) {
+    super(db, ProjectsTable);
+  }
+}
+
+@Injectable()
+export class DebugExpensesRepository extends DebugRepository<Expenses> {
+  constructor(db: DbClient<Expenses>) {
+    super(db, ExpensesTable);
+  }
+}
+
+@Injectable()
+export class DebugParticipationRepository extends DebugRepository<Participant> {
+  constructor(db: DbClient<Participant>) {
+    super(db, ParticipantTable);
   }
 }
