@@ -36,12 +36,10 @@ describe('ProjectImplService', () => {
     }).compile();
 
     service = await module.get<ProjectImplService>(ProjectImplService);
-    repository = await module.get<DeepMocked<ProjectRepository>>(
-      ProjectRepository,
-    );
-    expensesService = await module.get<DeepMocked<ExpensesService>>(
-      ExpensesService,
-    );
+    repository =
+      await module.get<DeepMocked<ProjectRepository>>(ProjectRepository);
+    expensesService =
+      await module.get<DeepMocked<ExpensesService>>(ExpensesService);
   });
 
   describe('getAll', () => {

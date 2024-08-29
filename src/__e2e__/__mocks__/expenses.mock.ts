@@ -11,6 +11,7 @@ export const expense1: Expenses = {
   payment_type: 1,
   project_id: 1,
   uuid: 'mock-1',
+  active: true,
 };
 
 export const expense2: Expenses = {
@@ -24,6 +25,7 @@ export const expense2: Expenses = {
   payment_type: 1,
   project_id: 1,
   uuid: 'mock-2',
+  active: true,
 };
 
 export const expense3: Expenses = {
@@ -37,6 +39,7 @@ export const expense3: Expenses = {
   payment_type: 1,
   project_id: 2,
   uuid: 'mock-3',
+  active: true,
 };
 
 export default [expense1, expense2, expense3];
