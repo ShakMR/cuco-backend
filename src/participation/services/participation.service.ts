@@ -7,6 +7,7 @@ import {
 import {
   ParticipationWithUserAndProject,
   ProjectParticipants,
+  ProjectParticipationSummary,
   UserParticipation,
 } from '../participation.model';
 
@@ -30,4 +31,8 @@ export abstract class ParticipationService {
     uuid: string,
     newParticipation: SetUserParticipationDto[],
   ): Promise<void>;
+
+  abstract getParticipationSummary(
+    uuid: string,
+  ): Promise<ProjectParticipationSummary>;
 }

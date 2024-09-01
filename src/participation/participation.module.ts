@@ -12,9 +12,17 @@ import { ParticipationImplRepository } from './repositories/participation-impl.r
 import { ParticipationRepository } from './repositories/participation.repository';
 import { ParticipationImplService } from './services/participation-impl.service';
 import { ParticipationService } from './services/participation.service';
+import { ExpensesModule } from '../expenses/expenses.module';
 
 @Module({
-  imports: [UserModule, ProjectModule, LoggerModule, DbModule, ConfigModule],
+  imports: [
+    UserModule,
+    ProjectModule,
+    ExpensesModule,
+    LoggerModule,
+    DbModule,
+    ConfigModule,
+  ],
   controllers: [ParticipationController],
   providers: [
     ParticipationResponseBuilder,

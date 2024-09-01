@@ -6,18 +6,24 @@ import { UserService } from '../../user/services/user.service';
 import { ParticipationNotFoundException } from '../exceptions/participation-not-found.exception';
 import {
   CreateParticipationDto,
+  Participant,
   SetUserParticipationDto,
 } from '../participation.dto';
 import {
+  Participation,
   ParticipationWithUserAndProject,
   ProjectParticipants,
+  ProjectParticipationSummary,
   UserParticipation,
 } from '../participation.model';
 import { ParticipationRepository } from '../repositories/participation.repository';
 import { ParticipationService } from './participation.service';
 import { ProjectNotFoundException } from '../../project/exceptions/project-not-found.exception';
-import user from '../../user/__mocks__/user';
-import { share } from 'rxjs';
+import { ExpensesService } from '../../expenses/service/expenses.service';
+import { EnrichedExpenseModel } from '../../expenses/expense.model';
+import { createMapWithIndex } from '../../common/utils/object';
+import { BaseUser } from '../../user/user.model';
+import { DebtService } from './debt.service';
 
 @Injectable()
 export class ParticipationImplService extends ParticipationService {
@@ -25,6 +31,7 @@ export class ParticipationImplService extends ParticipationService {
     private repository: ParticipationRepository,
     private userService: UserService,
     private projectService: ProjectService,
+    private expensesService: ExpensesService,
   ) {
     super();
   }
@@ -155,5 +162,41 @@ export class ParticipationImplService extends ParticipationService {
     const promises = newParticipation.map(this.repository.save);
 
     await Promise.all(promises);
+  }
+
+  async getParticipationSummary(
+    uuid: string,
+  ): Promise<ProjectParticipationSummary> {
+    const project = await this.projectService.getByUuid(uuid);
+
+    if (!project) {
+      throw new ProjectNotFoundException({ uuid });
+    }
+
+    const participation = await this.repository.findByProject(project.id);
+    const activeExpenses = await this.expensesService.getFromProject(
+      project.id,
+    ); // .filter(({ active }) => active); // TODO get only active ones
+
+    const userIds = participation.map(({ user }) => user.id);
+
+    const users = await this.userService.getAllById(userIds);
+
+    const indexedUsers = createMapWithIndex(users, 'uuid');
+
+    const participationMap = createMapWithIndex(participation, 'user', 'id');
+
+    console.log(participationMap);
+    console.log(activeExpenses);
+
+    return {
+      project,
+      participants: indexedUsers,
+      debt: DebtService.calculateDebt(
+        indexedUsers,
+        activeExpenses,
+        participationMap,
+      ),
+    };
   }
 }

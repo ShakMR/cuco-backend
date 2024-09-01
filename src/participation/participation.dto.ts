@@ -97,6 +97,47 @@ export class ProjectParticipationDto {
   participants: ParticipantDto[];
 }
 
+export class UserDebtSummary {
+  @ApiProperty({
+    type: SingleUserResponse,
+  })
+  to: SingleUserResponse;
+  @ApiProperty()
+  amount: number;
+  @ApiProperty()
+  currency: string;
+}
+
+export class UserParticipationSummary {
+  @ApiProperty()
+  userUUID: string;
+  @ApiProperty()
+  ows: Record<string, number>;
+  @ApiProperty()
+  totalOwned: number;
+  @ApiProperty()
+  receives: number;
+}
+
+export class ProjectParticipationSummaryDto {
+  @ApiProperty({
+    type: SingleProjectWithoutExpenses,
+  })
+  project: SingleProjectWithoutExpenses;
+
+  @ApiProperty({
+    type: () => ({
+      name: { type: SingleUserResponse },
+    }),
+  })
+  participants: Record<string, SingleUserResponse>;
+
+  @ApiProperty({
+    type: [UserParticipationSummary],
+  })
+  summary: UserParticipationSummary[];
+}
+
 export class UserParticipationResponse extends ResponseDto<UserParticipationDto> {
   @ApiProperty({
     type: UserParticipationDto,
@@ -109,4 +150,11 @@ export class ProjectParticipantsResponse extends ResponseDto<ProjectParticipatio
     type: ProjectParticipationDto,
   })
   data: ProjectParticipationDto;
+}
+
+export class ProjectParticipationSummaryResponse extends ResponseDto<ProjectParticipationSummaryDto> {
+  @ApiProperty({
+    type: ProjectParticipationSummaryDto,
+  })
+  data: ProjectParticipationSummaryDto;
 }

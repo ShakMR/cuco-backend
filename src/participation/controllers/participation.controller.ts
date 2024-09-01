@@ -17,6 +17,7 @@ import { LoggerService } from '../../logger/logger.service';
 import {
   CreateParticipationDto,
   ProjectParticipantsResponse,
+  ProjectParticipationSummaryResponse,
   SetUserParticipationDto,
   SingleParticipationResponse,
   UserParticipationResponse,
@@ -102,6 +103,18 @@ export class ParticipationController {
     return this.responseBuilder.buildProjectParticipantsResponse(
       projectParticipants,
     );
+  }
+
+  @Get('/project/:uuid/summary')
+  @ApiOkResponse({
+    type: ProjectParticipationSummaryResponse,
+  })
+  async getProjectParticipationSummary(
+    @Param('uuid') uuid: string,
+  ): Promise<ProjectParticipationSummaryResponse> {
+    const participationSummary =
+      await this.service.getParticipationSummary(uuid);
+    return this.responseBuilder.buildParticipationSummary(participationSummary);
   }
 
   @Put('/project/:uuid')

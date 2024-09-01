@@ -8,15 +8,18 @@ import { UserResponseBuilder } from '../../user/controllers/user-response.builde
 import {
   ParticipantInProjectDto,
   ProjectParticipantsResponse,
+  ProjectParticipationSummaryResponse,
   SingleParticipationResponse,
   UserParticipationResponse,
 } from '../participation.dto';
 import {
   ParticipationWithUserAndProject,
   ProjectParticipants,
+  ProjectParticipationSummary,
   UserParticipation,
 } from '../participation.model';
 import { ParticipationTransformer } from './participation.transformer';
+import { mapOverValues } from '../../common/utils/object';
 
 @Injectable()
 export class ParticipationResponseBuilder {
@@ -153,6 +156,26 @@ export class ParticipationResponseBuilder {
           }),
         },
       },
+    };
+  }
+
+  buildParticipationSummary(
+    participationSummary: ProjectParticipationSummary,
+  ): ProjectParticipationSummaryResponse {
+    return {
+      data: {
+        project: this.projectResponseBuilder.buildSingleResponse(
+          participationSummary.project,
+        ),
+        participants: mapOverValues(
+          participationSummary.participants,
+          this.userResponseBuilder.buildSingleResponse.bind(
+            this.userResponseBuilder,
+          ),
+        ),
+        summary: participationSummary.debt,
+      },
+      meta: {},
     };
   }
 }

@@ -1,5 +1,6 @@
+import { PaymentTypeName } from '../../payment-type/payment-type.model';
+
 export default {
-  created_at: new Date(),
   id: 1,
-  name: 'debit',
+  name: PaymentTypeName.debit,
 };

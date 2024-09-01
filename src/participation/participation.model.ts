@@ -31,3 +31,16 @@ export type ProjectParticipants = {
     joinedOn: Date;
   }[];
 };
+
+export type ProjectParticipationSummary = {
+  project: Project;
+  participants: {
+    [userUUID: string]: BaseUser;
+  };
+  debt: {
+    userUUID: string;
+    ows: Record<string, number>;
+    totalOwned: number;
+    receives: number;
+  }[];
+};
