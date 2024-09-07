@@ -7,6 +7,7 @@ export type DebtSummary = {
   ows: Record<string, number>;
   totalOwned: number;
   receives: number;
+  expenses?: string[];
 };
 
 export class DebtService {
@@ -14,6 +15,7 @@ export class DebtService {
     userIndex: Record<string, BaseUser>,
     expenses: EnrichedExpenseModel[],
     participation: Record<number, Participation>,
+    options?: { includeDetail?: boolean },
   ): {
     userUUID: string;
     ows: Record<string, number>;
@@ -33,13 +35,15 @@ export class DebtService {
             }, {}),
           totalOwned: 0,
           receives: 0,
+          expenses: options.includeDetail ? [] : undefined,
         };
         return acc;
       },
       {},
     );
 
-    for (const { payer, amount } of expenses) {
+    for (const expense of expenses) {
+      const { payer, amount } = expense;
       const { id, uuid } = payer;
       const payerShare = participation[id].share;
 
@@ -57,10 +61,22 @@ export class DebtService {
 
           debts[debtorUUID].ows[uuid] += cost;
           debts[debtorUUID].totalOwned += cost;
+          if (options.includeDetail) {
+            debts[debtorUUID].expenses.push(
+              this.buildExpenseDetail(expense, cost),
+            );
+          }
         });
     }
 
     return Object.values(debts);
+  }
+
+  static buildExpenseDetail(
+    { payer, amount, currency, concept }: EnrichedExpenseModel,
+    cost,
+  ) {
+    return `${concept} - ${cost} ${currency.name} (${amount}) - ${payer.name}`;
   }
 
   static calculateCostPerShare(amount: number, share: number) {

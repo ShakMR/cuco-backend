@@ -166,6 +166,7 @@ export class ParticipationImplService extends ParticipationService {
 
   async getParticipationSummary(
     uuid: string,
+    includeDetail: boolean = false,
   ): Promise<ProjectParticipationSummary> {
     const project = await this.projectService.getByUuid(uuid);
 
@@ -196,6 +197,7 @@ export class ParticipationImplService extends ParticipationService {
         indexedUsers,
         activeExpenses,
         participationMap,
+        { includeDetail },
       ),
     };
   }

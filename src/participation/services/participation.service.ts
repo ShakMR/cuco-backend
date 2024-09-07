@@ -34,5 +34,6 @@ export abstract class ParticipationService {
 
   abstract getParticipationSummary(
     uuid: string,
+    includeDetail?: boolean,
   ): Promise<ProjectParticipationSummary>;
 }

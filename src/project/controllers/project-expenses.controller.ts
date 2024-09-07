@@ -5,6 +5,8 @@ import {
   NotFoundException,
   Param,
   Post,
+  Req,
+  UseGuards,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -16,9 +18,12 @@ import {
 import { ExpenseTransformer } from '../../expenses/expense.transformer';
 import { LoggerService } from '../../logger/logger.service';
 import { ProjectService } from '../service/project.service';
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { RequestWithUser } from '../../common/models/request';
 
 @ApiTags('projects', 'expenses')
 @Controller('/projects/:p_uuid/expenses')
+@UseGuards(JwtAuthGuard)
 export class ProjectExpensesController {
   constructor(
     private service: ProjectService,
@@ -67,6 +72,7 @@ export class ProjectExpensesController {
   async postExpense(
     @Param('p_uuid') projectUuid: string,
     @Body() toCreate: CreateExpenseDto,
+    @Req() req: RequestWithUser,
   ): Promise<ExpenseResponse> {
     const expense = await this.service.addNewExpenseToProject(projectUuid, {
       amount: toCreate.amount,
@@ -74,7 +80,7 @@ export class ProjectExpensesController {
       paymentTypeName: toCreate.paymentType.toString(),
       date: new Date(toCreate.date),
       concept: toCreate.concept,
-      payerId: 1, // TODO add user id when middleware is added,
+      payerId: req.user.id,
     });
 
     return {

@@ -109,11 +109,15 @@ export class ParticipationController {
   @ApiOkResponse({
     type: ProjectParticipationSummaryResponse,
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   async getProjectParticipationSummary(
     @Param('uuid') uuid: string,
+    @Query('includeDetail') includeDetail: boolean,
   ): Promise<ProjectParticipationSummaryResponse> {
-    const participationSummary =
-      await this.service.getParticipationSummary(uuid);
+    const participationSummary = await this.service.getParticipationSummary(
+      uuid,
+      includeDetail,
+    );
     return this.responseBuilder.buildParticipationSummary(participationSummary);
   }
 
